@@ -9,13 +9,14 @@ import (
 
 func PostEvents(c *gin.Context) {
 	var body struct {
-		Title   string
-		Desc    string
-		Address string
-		Date    string
+		Title    string
+		Desc     string
+		Address  string
+		Date     string
+		Strength uint
 	}
 	c.Bind(&body)
-	event := models.Post{Title: body.Title, Desc: body.Desc, Address: body.Address, Date: body.Date}
+	event := models.Post{Title: body.Title, Desc: body.Desc, Address: body.Address, Date: body.Date, Strength: body.Strength}
 	result := initializers.DB.Create(&event)
 	if result.Error != nil {
 		c.Status(500)
@@ -57,13 +58,14 @@ func UpdateEvent(c *gin.Context) {
 	var event models.Post
 	initializers.DB.Find(&event, id)
 	var body struct {
-		Title   string
-		Desc    string
-		Address string
-		Date    string
+		Title    string
+		Desc     string
+		Address  string
+		Date     string
+		Strength uint
 	}
 	c.Bind(&body)
-	result := initializers.DB.Model(&event).Updates(models.Post{Title: body.Title, Desc: body.Desc, Address: body.Address, Date: body.Date})
+	result := initializers.DB.Model(&event).Updates(models.Post{Title: body.Title, Desc: body.Desc, Address: body.Address, Date: body.Date, Strength: body.Strength})
 	if result.Error != nil {
 		c.Status(500)
 		return
