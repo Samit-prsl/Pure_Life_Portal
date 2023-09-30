@@ -71,7 +71,7 @@ func OrgSignin(c *gin.Context) {
 		return
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": "Organization.ID",
+		"sub": Organization.ID,
 		"exp": time.Now().Add(time.Hour * 24).Unix(),
 	})
 

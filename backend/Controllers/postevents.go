@@ -8,6 +8,12 @@ import (
 )
 
 func PostEvents(c *gin.Context) {
+	Org, _ := c.Get("Organization")
+	organization, err := Org.(models.Organization)
+	if !err {
+		c.Status(500)
+		return
+	}
 	var body struct {
 		Title    string
 		Desc     string
@@ -18,12 +24,14 @@ func PostEvents(c *gin.Context) {
 	c.Bind(&body)
 	event := models.Post{Title: body.Title, Desc: body.Desc, Address: body.Address, Date: body.Date, Strength: body.Strength}
 	result := initializers.DB.Create(&event)
+
 	if result.Error != nil {
 		c.Status(500)
 		return
 	}
 	c.JSON(200, gin.H{
 		"message": event,
+		"user":    organization,
 	})
 
 }
