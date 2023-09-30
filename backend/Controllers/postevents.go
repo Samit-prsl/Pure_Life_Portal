@@ -8,21 +8,23 @@ import (
 )
 
 func PostEvents(c *gin.Context) {
-	Org, _ := c.Get("Organization")
-	organization, err := Org.(models.Organization)
+	Org, err := c.Get("Organization")
 	if !err {
 		c.Status(500)
 		return
 	}
 	var body struct {
-		Title    string
-		Desc     string
-		Address  string
-		Date     string
-		Strength uint
+		Title     string
+		Desc      string
+		Address   string
+		Date      string
+		Strength  uint
+		OrgRefer  uint
+		UserRefer uint
 	}
 	c.Bind(&body)
-	event := models.Post{Title: body.Title, Desc: body.Desc, Address: body.Address, Date: body.Date, Strength: body.Strength}
+	body.OrgRefer = Org.(models.Organization).ID
+	event := models.Post{Title: body.Title, Desc: body.Desc, Address: body.Address, Date: body.Date, Strength: body.Strength, OrgRefer: body.OrgRefer}
 	result := initializers.DB.Create(&event)
 
 	if result.Error != nil {
@@ -30,8 +32,7 @@ func PostEvents(c *gin.Context) {
 		return
 	}
 	c.JSON(200, gin.H{
-		"message": event,
-		"user":    organization,
+		"user": event,
 	})
 
 }

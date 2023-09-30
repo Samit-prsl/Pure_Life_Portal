@@ -86,3 +86,18 @@ func OrgSignin(c *gin.Context) {
 		"token": gettoken,
 	})
 }
+
+func Getorgs(c *gin.Context) {
+	ID := c.Param("id")
+	var Getorgs []models.Organization
+	result := initializers.DB.Find(&models.Organization{}, ID).Preload("Events").Find(&Getorgs).Error
+	if result != nil {
+		c.JSON(500, gin.H{
+			"Message": "Cant retrieve organizations",
+		})
+		return
+	}
+	c.JSON(200, gin.H{
+		"User": Getorgs,
+	})
+}

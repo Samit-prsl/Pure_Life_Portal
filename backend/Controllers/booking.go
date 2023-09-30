@@ -8,24 +8,29 @@ import (
 )
 
 func Booking(c *gin.Context) {
-	var event models.Post
-	result := initializers.DB.Find(&event, c.Param("id"))
+	ID := c.Param("id")
+	User, err := c.Get("User")
+	if !err {
+		c.JSON(500, gin.H{
+			"message": "User not found",
+		})
+		return
+	}
+	var body struct {
+		UserRefer uint
+	}
+	c.Bind(&body)
+	var post models.Post
+	initializers.DB.Find(&post, ID)
+	body.UserRefer = User.(models.User).ID
+	result := initializers.DB.Model(&post).Updates(models.Post{UserRefer: body.UserRefer})
 	if result.Error != nil {
-		c.JSON(404, gin.H{
-			"Message": "Event not found",
+		c.JSON(500, gin.H{
+			"Message": "Cant update",
 		})
 		return
 	}
-	if event.Strength > 0 {
-		event.Strength = event.Strength - 1
-		initializers.DB.Model(&event).Updates(models.Post{Strength: event.Strength})
-		c.JSON(200, gin.H{
-			"Message": "Strength updated successfully!",
-			"Data":    event,
-		})
-		return
-	}
-	c.JSON(500, gin.H{
-		"Message": "Cant allow more participants anymore or event not found!",
+	c.JSON(200, gin.H{
+		"Message": "Event added to user db",
 	})
 }
