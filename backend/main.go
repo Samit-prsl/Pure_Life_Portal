@@ -23,6 +23,8 @@ func main() {
 	r.POST("/bookings/:id", middleware.GetAuthenticatedUsers, controllers.Booking)
 	r.GET("/events", controllers.GetEvents)
 	r.GET("/event/:id", controllers.GetEvent)
+	r.GET("/userevent", middleware.GetAuthenticatedUsers, controllers.GetEventsFromUser)
+	r.GET("/attendingusers/:id", middleware.GetAuthenticatedUsers, controllers.GetUserFromPosts)
 	r.GET("/getorg/:id", middleware.GetAuthenticated, controllers.Getorgs)
 	r.GET("/getuser/:id", middleware.GetAuthenticatedUsers, controllers.GetUser)
 	r.PUT("/updatevent/:id", middleware.GetAuthenticated, controllers.UpdateEvent)

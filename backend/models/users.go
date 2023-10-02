@@ -6,5 +6,5 @@ type User struct {
 	gorm.Model
 	Email    string `gorm:"unique"`
 	Password string
-	Attended []Post `gorm:"foreignKey:UserRefer"`
+	//Events   []UserEvent `gorm:"many2many:user_events;"`
 }
