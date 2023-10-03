@@ -248,7 +248,8 @@
 					{
 						"key": "Authorization",
 						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTY0MDQzNzcsInN1YiI6NH0.ZajZoVYyoWG2kOmsqo-IMBRxrDsNzCsROs54t0O0WC8",
-						"type": "text"
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"url": "http://localhost:5000/getorg/1",
