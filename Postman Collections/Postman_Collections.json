@@ -335,7 +335,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:5000/attendingusers/4",
+					"raw": "http://localhost:5000/attendingusers/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -343,7 +343,7 @@
 					"port": "5000",
 					"path": [
 						"attendingusers",
-						"4"
+						"1"
 					],
 					"query": [
 						{
