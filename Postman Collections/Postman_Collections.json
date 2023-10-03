@@ -309,7 +309,8 @@
 					{
 						"key": "Authorization",
 						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTYzOTkxNjEsInN1YiI6M30.dFZS_MiEMmCa-Fdn9oUnZtTYMET40yXupBLT_SRtWbk",
-						"type": "text"
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"url": "http://localhost:5000/userevent",
