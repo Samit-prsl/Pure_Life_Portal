@@ -330,7 +330,8 @@
 					{
 						"key": "Authorization",
 						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTY0MDQ4NjgsInN1YiI6MX0.-nGUD6zhyWI0E_FSGCibkgOwli3aeKozjGemBLEztM0",
-						"type": "text"
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"url": {
