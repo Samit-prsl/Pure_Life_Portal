@@ -1,0 +1,355 @@
+{
+	"info": {
+		"_postman_id": "096b84f5-fee3-457e-ae31-64e7ffc3554f",
+		"name": "Pure_life_Portal",
+		"description": "Pure_life_Portal provides an organization to post events related to medical/social services, a regular user to see all the events listed/uploaded and he/she can book a ticket to that event. The organization who listed the above event can see all the Users attending the event.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register for User",
+			"id": "e462297b-8eb7-4a03-b52a-43fa710fe1be",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Email\":\"Samit3@gmail.com\",\r\n    \"Password\":\"Samit3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:5000/register",
+				"description": "This route adds the signup functionality for the user."
+			},
+			"response": []
+		},
+		{
+			"name": "Login for User",
+			"id": "429397d7-5f98-4176-bd2d-d260c896b055",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"Email\":\"Samit3@gmail.com\",\r\n      \"Password\":\"Samit3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:5000/login",
+				"description": "This route adds the login functionality of User and returns a jwt token."
+			},
+			"response": []
+		},
+		{
+			"name": "Register for Orgs",
+			"id": "213cd97c-a8ae-43d0-9838-7b20c0fb699b",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Name\":\"Socially Expressable\",\r\n    \"Address\":\"Anandapuri SBI\",\r\n    \"Email\":\"Social@gmail.com\",\r\n    \"Password\":\"Social\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:5000/orgRegister",
+				"description": "This route adds the signup functionality for the organization."
+			},
+			"response": []
+		},
+		{
+			"name": "Login for Orgs",
+			"id": "f16973f9-cc1a-4447-9456-50d4387a7272",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTY0MDQ4NjgsInN1YiI6MX0.-nGUD6zhyWI0E_FSGCibkgOwli3aeKozjGemBLEztM0",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"Email\":\"SevaSamaj@gmail.com\",\r\n     \"Password\":\"SevaSamaj\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:5000/orgLogin",
+				"description": "This route adds the signup functionality for the organization and returns a jwt token."
+			},
+			"response": []
+		},
+		{
+			"name": "Post Events",
+			"id": "ae48a2d5-a169-47b6-87e2-baabb781e8c5",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTYzOTk1MTUsInN1YiI6NH0.xdY8Q_FTbSL_GE81hqXM0eNNEOYlBylIjZWn8veCt90",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Title\":\"Heart disease check bootcamp\",\r\n    \"Desc\":\"Organized by self-funded NGO to facilitate better medical advises to heart patients\",\r\n    \"Address\":\"Harisava Road\",\r\n    \"Date\":\"5-10-2023\",\r\n    \"Strength\":75\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:5000/postevent",
+				"description": "This route adds helps to post certain medical related/ social service related events/programs."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Events",
+			"id": "35323a92-7993-4253-a926-bc17df1dc634",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "http://localhost:5000/events",
+				"description": "This route makes a get request and retrieves all the events listed."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Single Event",
+			"id": "4e3efb55-c29f-4f00-8804-5dee5d8da526",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:5000/event/5"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Event",
+			"id": "6ee7555c-6e12-4694-9fc5-8aa4be2d8767",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTYzOTk1MTUsInN1YiI6NH0.xdY8Q_FTbSL_GE81hqXM0eNNEOYlBylIjZWn8veCt90",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Title\":\"Heart disease check bootcamp\",\r\n    \"Desc\":\"Organized by self-funded NGO to facilitate better medical advises to heart patients\",\r\n    \"Address\":\"Harisava Road,Barrackpore\",\r\n    \"Date\":\"5-10-2023\",\r\n    \"Strength\":95\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:5000/updatevent/5",
+				"description": "This route updates the event retrieved by the id and updates the event."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Event",
+			"id": "3c0a7603-c231-4337-80b3-087381d87882",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTYzOTk1MTUsInN1YiI6NH0.xdY8Q_FTbSL_GE81hqXM0eNNEOYlBylIjZWn8veCt90",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5000/deletevent/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"deletevent",
+						"5"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This deletes the retrieved event from ID."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Organization data",
+			"id": "3a31d1a6-be0f-48f0-96e2-4d0bb17d09c7",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTY0MDQzNzcsInN1YiI6NH0.ZajZoVYyoWG2kOmsqo-IMBRxrDsNzCsROs54t0O0WC8",
+						"type": "text"
+					}
+				],
+				"url": "http://localhost:5000/getorg/1",
+				"description": "This route provides the information of the organization retrieved by the id and returns all of its conducted events."
+			},
+			"response": []
+		},
+		{
+			"name": "Booking an event",
+			"id": "5cd3ea37-7994-418a-9107-4cafe029fce5",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTYzOTkxNjEsInN1YiI6M30.dFZS_MiEMmCa-Fdn9oUnZtTYMET40yXupBLT_SRtWbk",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5000/bookings/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"bookings",
+						"2"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This routes helps to book an event from the id given in the route itself ands the details to a table in database."
+			},
+			"response": []
+		},
+		{
+			"name": "Events to be attended by user",
+			"id": "6c49f23d-704c-4442-ad6f-ed44960c4820",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTYzOTkxNjEsInN1YiI6M30.dFZS_MiEMmCa-Fdn9oUnZtTYMET40yXupBLT_SRtWbk",
+						"type": "text"
+					}
+				],
+				"url": "http://localhost:5000/userevent",
+				"description": "This route will return all the events attended by the user."
+			},
+			"response": []
+		},
+		{
+			"name": "Users attending a event",
+			"id": "0e3e0e0f-e9b9-4f45-9244-278c4bedd709",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTY0MDQ4NjgsInN1YiI6MX0.-nGUD6zhyWI0E_FSGCibkgOwli3aeKozjGemBLEztM0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5000/attendingusers/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"attendingusers",
+						"4"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This route returns all the users attending an event retrieved by the ID."
+			},
+			"response": []
+		}
+	]
+}
