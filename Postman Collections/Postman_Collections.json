@@ -123,7 +123,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"Title\":\"COPD disease check bootcamp\",\r\n    \"Desc\":\"Organized by self-funded NGO to facilitate better medical advises to COPD patients\",\r\n    \"Address\":\"Harisava Road, 3rd lane\",\r\n    \"Date\":\"8-10-2023\",\r\n    \"Strength\":2\r\n}",
+					"raw": "{\r\n    \"Title\":\"COPD disease check bootcamp with lab\",\r\n    \"Desc\":\"Organized by self-funded NGO to facilitate better medical advises to COPD patients\",\r\n    \"Address\":\"Kolkata\",\r\n    \"Date\":\"9-10-2023\",\r\n    \"Strength\":3\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
