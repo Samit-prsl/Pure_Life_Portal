@@ -17,7 +17,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"Email\":\"Samit3@gmail.com\",\r\n    \"Password\":\"Samit3\"\r\n}",
+					"raw": "{\r\n    \"Email\":\"Samit@gmail.com\",\r\n    \"Password\":\"Samit\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -40,7 +40,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n      \"Email\":\"Samit3@gmail.com\",\r\n      \"Password\":\"Samit3\"\r\n}",
+					"raw": "{\r\n      \"Email\":\"Samit@gmail.com\",\r\n      \"Password\":\"Samit\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
