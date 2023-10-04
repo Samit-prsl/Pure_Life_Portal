@@ -1,11 +1,14 @@
 package main
 
 import (
+	// "log"
+	// "net/http"
 	controllers "restapi/code/Controllers"
 	initializers "restapi/code/Initializers"
 	"restapi/code/middleware"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rs/cors"
 )
 
 func init() {
@@ -15,6 +18,14 @@ func init() {
 
 func main() {
 	r := gin.Default()
+
+	cors := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowCredentials: true,
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+	})
+	cors.Handler(r)
+
 	r.POST("/register", controllers.Signup)
 	r.POST("/login", controllers.Signin)
 	r.POST("/orgRegister", controllers.OrgSignup)
