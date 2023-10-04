@@ -247,7 +247,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTY0MDQzNzcsInN1YiI6NH0.ZajZoVYyoWG2kOmsqo-IMBRxrDsNzCsROs54t0O0WC8",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTY1MjU1OTYsInN1YiI6MX0.tc06X5yGs8Z7WStrZtDnmQnmj822iXTTGv1ejbDGmHg",
 						"type": "text",
 						"disabled": true
 					}
@@ -268,13 +268,13 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTYzOTkxNjEsInN1YiI6M30.dFZS_MiEMmCa-Fdn9oUnZtTYMET40yXupBLT_SRtWbk",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTY1MjU4NjYsInN1YiI6MX0.SgfcEB4Z5cK349ss-diAzAUk0jDmggvQ2qtEbk0Iu7A",
 						"type": "text",
 						"disabled": true
 					}
 				],
 				"url": {
-					"raw": "http://localhost:5000/bookings/2",
+					"raw": "http://localhost:5000/bookings/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -282,7 +282,7 @@
 					"port": "5000",
 					"path": [
 						"bookings",
-						"2"
+						"1"
 					],
 					"query": [
 						{
@@ -308,7 +308,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTYzOTkxNjEsInN1YiI6M30.dFZS_MiEMmCa-Fdn9oUnZtTYMET40yXupBLT_SRtWbk",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTY1MjU4NjYsInN1YiI6MX0.SgfcEB4Z5cK349ss-diAzAUk0jDmggvQ2qtEbk0Iu7A",
 						"type": "text",
 						"disabled": true
 					}
@@ -329,7 +329,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTY0MDQ4NjgsInN1YiI6MX0.-nGUD6zhyWI0E_FSGCibkgOwli3aeKozjGemBLEztM0",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTY1MjYwODIsInN1YiI6MX0.FxHJ-0mrIO5SSLIk-EbnfBvRpsGzKaLduHOpKYPAyJU",
 						"type": "text",
 						"disabled": true
 					}
