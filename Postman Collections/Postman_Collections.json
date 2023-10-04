@@ -17,7 +17,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"Email\":\"Samit3@gmail.com\",\r\n    \"Password\":\"Samit3\"\r\n}",
+					"raw": "{\r\n    \"Email\":\"Samit@gmail.com\",\r\n    \"Password\":\"Samit\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -40,7 +40,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n      \"Email\":\"Samit3@gmail.com\",\r\n      \"Password\":\"Samit3\"\r\n}",
+					"raw": "{\r\n      \"Email\":\"Samit@gmail.com\",\r\n      \"Password\":\"Samit\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -93,7 +93,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n     \"Email\":\"SevaSamaj@gmail.com\",\r\n     \"Password\":\"SevaSamaj\"\r\n}",
+					"raw": "{\r\n     \"Email\":\"Social@gmail.com\",\r\n     \"Password\":\"Social\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -116,14 +116,14 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTYzOTk1MTUsInN1YiI6NH0.xdY8Q_FTbSL_GE81hqXM0eNNEOYlBylIjZWn8veCt90",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTY1MjU1OTYsInN1YiI6MX0.tc06X5yGs8Z7WStrZtDnmQnmj822iXTTGv1ejbDGmHg",
 						"type": "text",
 						"disabled": true
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"Title\":\"COPD disease check bootcamp with lab\",\r\n    \"Desc\":\"Organized by self-funded NGO to facilitate better medical advises to COPD patients\",\r\n    \"Address\":\"Kolkata\",\r\n    \"Date\":\"9-10-2023\",\r\n    \"Strength\":3\r\n}",
+					"raw": "{\r\n    \"Title\":\"COPD disease check bootcamp with lab\",\r\n    \"Desc\":\"Organized by self-funded NGO to facilitate better medical advises to COPD patients\",\r\n    \"Address\":\"Kolkata\",\r\n    \"Date\":\"9-10-2023\",\r\n    \"Strength\":10\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -162,7 +162,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "http://localhost:5000/event/5"
+				"url": "http://localhost:5000/event/1"
 			},
 			"response": []
 		},
@@ -335,7 +335,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:5000/attendingusers/4",
+					"raw": "http://localhost:5000/attendingusers/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -343,7 +343,7 @@
 					"port": "5000",
 					"path": [
 						"attendingusers",
-						"4"
+						"1"
 					],
 					"query": [
 						{
