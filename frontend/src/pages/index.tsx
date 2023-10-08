@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import styles from '@/styles/Home.module.css'
-
-const inter = Inter({ subsets: ['latin'] })
+//import { Inter,Quicksand,Cinzel } from '@next/font/google'
+import Navbar from '@/Components/Navbar'
+import Layout from '@/Components/Layout'
+//import styles from '@/styles/Home.module.css'
 
 export default function Home() {
   return (
@@ -14,9 +14,10 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-    <div className=' h-screen bg-teal-400 text-black flex justify-center items-center'>
-        <div className='  text-[Cinzel] text-6xl'>Its Cooking!</div>
-    </div>
+      <div className=' bg-sky-400 min-h-screen'>
+        <Navbar/>
+        <Layout/>
+      </div>
     </>
   )
 }

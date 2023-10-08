@@ -4,7 +4,14 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily : {
+        cinzel : ['var(--font-cinzel)'],
+        quicksand : ['var(--font-quicksand)'],
+        poppins : ['var(--font-poppins)'],
+        raleway : ['var(--font-raleway)']
+      }
+    },
   },
   plugins: [],
 }
