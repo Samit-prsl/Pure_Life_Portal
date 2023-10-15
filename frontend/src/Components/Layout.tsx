@@ -1,23 +1,14 @@
 import React from 'react'
 import Image from 'next/image'
+import Navbar from './Navbar'
+
 export default function Layout() {
   return (
-    <>
-    <div className=' flex justify-center items-start p-8'>
-      <p className=' font-raleway lg:text-3xl text-2xl text-rose-600'>Presenting the whole new place for medical programs or services.</p>
-    </div>
-    <div className=' p-6'>
-        <div className=' h-96 w-1/3 bg-teal-200 rounded-3xl'>
-            <Image src="/photo1.png" alt='...' height={400} width={700}/>
-            
-        </div>
-        <div>
-
-        </div>
-        <div>
-
-        </div>
-    </div>
-    </>
+   <>
+   <Navbar/>
+   <div className=' py-8 px-6'>
+      <h1 className=' text-3xl font-quicksand text-sky-800'>Welcome to Pure Life Portal, Your one stop destination for Socio-medico needs.</h1>
+   </div>
+   </>
   )
 }

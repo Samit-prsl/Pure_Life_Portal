@@ -1,7 +1,7 @@
 import Head from 'next/head'
-import Image from 'next/image'
+//import Image from 'next/image'
 //import { Inter,Quicksand,Cinzel } from '@next/font/google'
-import Navbar from '@/Components/Navbar'
+//import Navbar from '@/Components/Navbar'
 import Layout from '@/Components/Layout'
 //import styles from '@/styles/Home.module.css'
 
@@ -14,8 +14,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className=' bg-sky-400 min-h-screen'>
-        <Navbar/>
+      <div className=' bg-gray-300 min-h-screen p-6'>
         <Layout/>
       </div>
     </>

@@ -1,50 +1,46 @@
-
-import Link from 'next/link'
 import React, { useState } from 'react'
-//import Link from 'next/link'
-import {RxCross1} from 'react-icons/rx'
 import {VscThreeBars} from 'react-icons/vsc'
-
+import {RxCross1} from 'react-icons/rx'
 export default function Navbar() {
-  const [click,Setclick] = useState(false)
+  const [Dropdown,SetDropdown] = useState(false) 
+  const dropdown = ():void => {
+    SetDropdown(!Dropdown)
+  }
   return (
-    <div className=' lg:p-5 p-3 bg-teal-300 flex justify-between lg:h-20 h-14 top-2 sticky z-10 rounded-l-[2.5rem]
-    rounded-r-[2.5rem]'>
-      <div>
-        <div className=' lg:text-3xl text-xl font-quicksand text-sky-900'><Link href='/'>Pure <span className=' text-rose-800 font-cinzel lg:text-xl text-sm'>Life</span> Portal</Link></div>
+    <>
+    <div className=' lg:h-20 h-16 w-full flex justify-between items-center border-b-2 border-gray-700'>
+      <h1 className=' font-cinzel lg:text-5xl text-2xl text-sky-800'>Pure <span className=' font-raleway lg:text-2xl text-xl text-rose-800'>Life</span> Portal</h1>
+      <div className=' font-quicksand text-rose-950 text-3xl lg:block hidden'>
+        <ul className=' flex justify-between items-center gap-8'>
+          <li className=' cursor-pointer hover:text-rose-600'>Home</li>
+          <li className=' cursor-pointer hover:text-rose-600'>About</li>
+          <li className=' cursor-pointer hover:text-rose-600'>Events</li>
+          <li className=' cursor-pointer hover:text-rose-600'>Contact</li>
+        </ul>
       </div>
-      <div className=' lg:hidden h-1/4 rounded-b-3xl'>
-        {click ? 
-        <>
-        <div className=' flex justify-end items-center pr-2'>
-        <RxCross1 className=' text-2xl my-1' onClick={()=>{Setclick(false)}}/>
+       {Dropdown ? 
+       <>
+       <div className=' lg:hidden block h-full w-1/2 z-10'>
+       <div className=' bg-gradient-to-br from-sky-300 to-pink-400 font-quicksand text-rose-950 text-xl px-5 py-2  border-rose-900 border-2 '>
+         <div className=' flex justify-end py-2'>
+         <RxCross1 className='  text-xl' onClick={dropdown}/>
+         </div>
+        <ul className=' flex flex-col justify-between items-center gap-5'>
+          <li className=' cursor-pointer hover:text-rose-600'>Home</li>
+          <li className=' cursor-pointer hover:text-rose-600'>About</li>
+          <li className=' cursor-pointer hover:text-rose-600'>Events</li>
+          <li className=' cursor-pointer hover:text-rose-600'>Contact</li>
+        </ul>
         </div>
-    <div className=' flex flex-col justify-center items-center p-5 gap-8 bg-teal-300 w-44 '>
-      <div> 
-        <ul className=' flex flex-col justify-between font-poppins gap-5 text-rose-800 text-xl '>
-            <Link href='/'><li >Home</li></Link>
-            <Link href=''><li>Events</li></Link>
-            <Link href=''><li>Organizations</li></Link>
-            <Link href=''><li>Contact</li></Link>
-        </ul>
-      </div>
+       </div>
+       </>
+       :
+       <>
+       <div className=' lg:hidden block'>
+       <VscThreeBars className=' text-3xl text-rose-950 hover:text-rose-600 cursor-pointer' onClick={dropdown}/>
+       </div>
+       </>}
     </div>
-        </> 
-        :
-        <>
-        <VscThreeBars className=' text-3xl text-rose-800' onClick={()=>{Setclick(true)}}/>
-        </>}
-      </div>
-      <div className=' lg:flex justify-between gap-8 hidden'>
-      <div>
-      <ul className=' flex  justify-between font-poppins gap-8 text-rose-800 text-2xl '>
-            <Link href='/'><li >Home</li></Link>
-            <Link href=''><li>Events</li></Link>
-            <Link href=''><li>Organizations</li></Link>
-            <Link href=''><li>Contact</li></Link>
-        </ul>
-      </div>
-      </div>
-    </div>
+    </>
   )
 }

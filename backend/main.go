@@ -8,7 +8,7 @@ import (
 	"restapi/code/middleware"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rs/cors"
+	cors "github.com/rs/cors/wrapper/gin"
 )
 
 func init() {
@@ -19,12 +19,15 @@ func init() {
 func main() {
 	r := gin.Default()
 
-	cors := cors.New(cors.Options{
-		AllowedOrigins:   []string{"*"},
-		AllowCredentials: true,
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
-	})
-	cors.Handler(r)
+	// c := cors.New(cors.Options{
+	// 	AllowedOrigins:   []string{"http://localhost:3000"},
+	// 	AllowCredentials: true,
+	// 	AllowedHeaders:   []string{"Origin"},
+	// 	AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+	// })
+	r.Use(cors.Default())
+
+	//r.Use(c)
 
 	r.POST("/register", controllers.Signup)
 	r.POST("/login", controllers.Signin)
