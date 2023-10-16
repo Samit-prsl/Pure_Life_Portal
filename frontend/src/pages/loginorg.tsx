@@ -38,7 +38,7 @@ export default function Login() {
                 <input type="password" name="password" id="userpassword" className=' outline-none lg:w-[60%] w-full p-3 my-2 font-poppins bg-gray-100 text-rose-950' onChange={(e)=>{SetPassword(e.target.value)}} />
               </div>
               <div className=' py-2'>
-              <button className={` px-5 py-2 bg-sky-700 text-rose-950 font-poppins lg:w-[60%] w-full hover:bg-sky-500 ${Loading ? `opacity-50 cursor-not-allowed`:``}`} onClick={handlesubmit}>Login</button>
+              <button className={` px-5 py-2 bg-sky-700 text-rose-950 font-poppins lg:w-[60%] w-full hover:bg-sky-500 ${Loading ? `opacity-50 cursor-wait`:``}`} onClick={handlesubmit}>Login</button>
               </div>
               <div className=' py-3'>
               <p className=' text-sky-800 font-cinzel text-xl '>Not Registered? <Link href='/registeruser' className=' text-rose-800'>Register now!</Link></p>

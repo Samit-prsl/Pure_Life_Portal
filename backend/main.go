@@ -18,16 +18,7 @@ func init() {
 
 func main() {
 	r := gin.Default()
-
-	// c := cors.New(cors.Options{
-	// 	AllowedOrigins:   []string{"http://localhost:3000"},
-	// 	AllowCredentials: true,
-	// 	AllowedHeaders:   []string{"Origin"},
-	// 	AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
-	// })
-	r.Use(cors.Default())
-
-	//r.Use(c)
+	r.Use(cors.AllowAll())
 
 	r.POST("/register", controllers.Signup)
 	r.POST("/login", controllers.Signin)
@@ -44,3 +35,12 @@ func main() {
 	r.DELETE("/deletevent/:id", middleware.GetAuthenticated, controllers.DeleteEvent)
 	r.Run()
 }
+
+// c := cors.New(cors.Options{
+// 	AllowedOrigins:   []string{"http://localhost:3000"},
+// 	AllowCredentials: true,
+// 	AllowedHeaders:   []string{"Origin"},
+// 	AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+// })
+
+//r.Use(c)

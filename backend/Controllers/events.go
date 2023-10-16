@@ -10,7 +10,7 @@ import (
 func PostEvents(c *gin.Context) {
 	Org, err := c.Get("Organization")
 	if !err {
-		c.Status(500)
+		c.Status(403)
 		return
 	}
 	var body struct {
