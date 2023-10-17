@@ -30,7 +30,7 @@ func main() {
 	r.GET("/event/:id", controllers.GetEvent)
 	r.GET("/userevent", middleware.GetAuthenticatedUsers, controllers.GetEventsFromUser)
 	r.GET("/attendingusers/:id", middleware.GetAuthenticated, controllers.GetUserFromPosts)
-	r.GET("/getOrg", middleware.GetAuthenticated, controllers.Orgs)
+	r.GET("/Getorg", middleware.GetAuthenticated, controllers.Getorgs)
 	r.PUT("/updatevent/:id", middleware.GetAuthenticated, controllers.UpdateEvent)
 	r.DELETE("/deletevent/:id", middleware.GetAuthenticated, controllers.DeleteEvent)
 	r.Run()

@@ -87,28 +87,33 @@ func OrgSignin(c *gin.Context) {
 	})
 }
 
-// func Getorgs(c *gin.Context) {
-// 	ID := c.Param("id")
-// 	var Getorgs []models.Organization
-// 	result := initializers.DB.Find(&models.Organization{}, ID).Preload("Events").Find(&Getorgs).Error
-// 	if result != nil {
-// 		c.JSON(500, gin.H{
-// 			"Message": "Cant retrieve organizations",
-// 		})
-// 		return
-// 	}
-// 	c.JSON(200, gin.H{
-// 		"User": Getorgs,
-// 	})
-// }
-
-func Orgs(c *gin.Context) {
+func Getorgs(c *gin.Context) {
 	org, err := c.Get("Organization")
 	if !err {
 		c.Status(403)
 		return
 	}
+	ID := org.(models.Organization).ID
+	var Getorgs []models.Organization
+	result := initializers.DB.Find(&models.Organization{}, ID).Preload("Events").Find(&Getorgs).Error
+	if result != nil {
+		c.JSON(500, gin.H{
+			"Message": "Cant retrieve organizations",
+		})
+		return
+	}
 	c.JSON(200, gin.H{
-		"Organization": org,
+		"User": Getorgs,
 	})
 }
+
+// func Orgs(c *gin.Context) {
+// 	org, err := c.Get("Organization")
+// 	if !err {
+// 		c.Status(403)
+// 		return
+// 	}
+// 	c.JSON(200, gin.H{
+// 		"Organization": org,
+// 	})
+// }

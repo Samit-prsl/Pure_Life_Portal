@@ -121,7 +121,7 @@ export default function Showevents() {
       <> 
       <div className=' bg-gray-300 min-h-screen p-6'>
         <div className=' border-b-4 border-b-sky-800 h-14 font-cinzel px-3 flex justify-between lg:text-3xl text-xl text-rose-800'>
-              <h1>Events you booked</h1>
+              <h1>All Events here</h1>
               <Link href='/'><AiOutlineHome className=' text-gray-600 cursor-pointer'/></Link>
         </div>
                 <div className=' lg:block flex justify-center items-center'>
