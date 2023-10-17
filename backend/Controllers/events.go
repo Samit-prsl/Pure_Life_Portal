@@ -63,6 +63,11 @@ func GetEvent(c *gin.Context) {
 }
 
 func UpdateEvent(c *gin.Context) {
+	org, err := c.Get("Organization")
+	if !err {
+		c.Status(403)
+		return
+	}
 	id := c.Param("id")
 	var event models.Post
 	initializers.DB.Find(&event, id)
@@ -72,9 +77,11 @@ func UpdateEvent(c *gin.Context) {
 		Address  string
 		Date     string
 		Strength uint
+		OrgRefer uint
 	}
+	body.OrgRefer = org.(models.Organization).ID
 	c.Bind(&body)
-	result := initializers.DB.Model(&event).Updates(models.Post{Title: body.Title, Desc: body.Desc, Address: body.Address, Date: body.Date, Strength: body.Strength})
+	result := initializers.DB.Model(&event).Updates(models.Post{Title: body.Title, Desc: body.Desc, Address: body.Address, Date: body.Date, Strength: body.Strength, OrgRefer: body.OrgRefer})
 	if result.Error != nil {
 		c.Status(500)
 		return
@@ -85,6 +92,11 @@ func UpdateEvent(c *gin.Context) {
 }
 
 func DeleteEvent(c *gin.Context) {
+	org, err := c.Get("Organization")
+	if !err {
+		c.Status(403)
+		return
+	}
 	id := c.Param("id")
 	var event models.Post
 	initializers.DB.Find(&event, id)
@@ -94,6 +106,7 @@ func DeleteEvent(c *gin.Context) {
 		return
 	}
 	c.JSON(200, gin.H{
-		"message": "Deleted successfully!",
+		"message":      "Deleted successfully!",
+		"Organization": org,
 	})
 }

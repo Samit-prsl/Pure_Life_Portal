@@ -31,6 +31,7 @@ func main() {
 	r.GET("/userevent", middleware.GetAuthenticatedUsers, controllers.GetEventsFromUser)
 	r.GET("/attendingusers/:id", middleware.GetAuthenticated, controllers.GetUserFromPosts)
 	r.GET("/getorg/:id", middleware.GetAuthenticated, controllers.Getorgs)
+	r.GET("/getOrg", middleware.GetAuthenticated, controllers.Orgs)
 	r.PUT("/updatevent/:id", middleware.GetAuthenticated, controllers.UpdateEvent)
 	r.DELETE("/deletevent/:id", middleware.GetAuthenticated, controllers.DeleteEvent)
 	r.Run()

@@ -22,14 +22,14 @@ export default function Navbar() {
        {Dropdown ? 
        <>
        <div className=' lg:hidden block h-full w-1/2 z-10'>
-       <div className=' bg-gradient-to-br from-sky-300 to-pink-400 font-quicksand text-rose-950 text-xl px-5 py-2  border-rose-900 border-2 '>
+       <div className=' bg-gradient-to-br from-sky-300 to-pink-200 font-quicksand text-rose-950 text-xl px-5 py-2  border-gray-700 border-2 '>
          <div className=' flex justify-end py-2'>
          <RxCross1 className='  text-xl' onClick={dropdown}/>
          </div>
         <ul className=' flex flex-col justify-between items-center gap-5'>
           <li className=' cursor-pointer hover:text-rose-600'>Home</li>
           <li className=' cursor-pointer hover:text-rose-600'>About</li>
-          <li className=' cursor-pointer hover:text-rose-600'>Events</li>
+          <li className=' cursor-pointer hover:text-rose-600'><Link href='showevents'>Events</Link></li>
           <li className=' cursor-pointer hover:text-rose-600'>Contact</li>
         </ul>
         </div>
