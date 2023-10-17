@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import {VscThreeBars} from 'react-icons/vsc'
 import {RxCross1} from 'react-icons/rx'
+import Link from 'next/link'
 export default function Navbar() {
   const [Dropdown,SetDropdown] = useState(false) 
   const dropdown = ():void => {
@@ -14,7 +15,7 @@ export default function Navbar() {
         <ul className=' flex justify-between items-center gap-8'>
           <li className=' cursor-pointer hover:text-rose-600'>Home</li>
           <li className=' cursor-pointer hover:text-rose-600'>About</li>
-          <li className=' cursor-pointer hover:text-rose-600'>Events</li>
+          <li className=' cursor-pointer hover:text-rose-600'><Link href='showevents'>Events</Link></li>
           <li className=' cursor-pointer hover:text-rose-600'>Contact</li>
         </ul>
       </div>

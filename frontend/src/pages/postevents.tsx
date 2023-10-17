@@ -6,16 +6,17 @@ export default function Postevents() {
   const [Desc, SetDesc] = useState('')
   const [Address, SetAddress] = useState('')
   const [Date, SetDate] = useState('')
-  const [Strength, SetStrength] = useState(0)
+  const [Strength2, SetStrength2] = useState(0)
   const [Loading,SetLoading] = useState(false)
   const handlesubmit = async (e:any) =>{
     SetLoading(true)
       try {
         const token = localStorage.getItem('token')
+        const Strength = Strength2 + 1
         const data = {
           Title,Desc,Address,Date,Strength
         }
-        const response = await axios.post('http://localhost:5000/postevent',data
+        const response = await axios.post('https://golang-rest.onrender.com/postevent',data
         ,{
           headers : {
             Authorization : `Bearer ${token}`
@@ -56,13 +57,13 @@ export default function Postevents() {
                 <p className=' text-sky-800 font-cinzel text-lg'>Number of people to attend <span className=' text-rose-800 cursor-pointer' title='Required'>*</span></p>
                 <input type="text" name="Strength" id="orgstrength" className=' outline-none lg:w-[60%] w-full p-3 my-2 font-poppins bg-gray-100 text-rose-950' onChange={(e)=>{
                   const strength = parseInt(e.target.value)
-                  SetStrength(strength)}} />
+                  SetStrength2(strength)}} />
             </div>
             <div className=' py-2'>
               <button className={` px-5 py-2 bg-sky-700 text-rose-950 font-poppins lg:w-[60%] w-full hover:bg-sky-500 ${Loading ? `opacity-50 cursor-wait`:``}`} onClick={handlesubmit}>Post</button>
               </div>
         </div>
-        <div className=' flex-[2.5] min-h-screen bg-[url("https://images.unsplash.com/photo-1640102371408-5fc0c42a8792?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDIwfHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60")] bg-cover bg-center w-full lg:block hidden '>
+        <div className=' flex-[2.5] min-h-screen bg-[url("https://images.unsplash.com/photo-1496096265110-f83ad7f96608?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDZ8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60")] bg-cover bg-center w-full lg:block hidden '>
         </div>
         <Toaster
         position="bottom-right"

@@ -14,7 +14,7 @@ export default function Login() {
             Email,Password
         })
         localStorage.setItem('token',res.data.token)
-        window.location.replace('/')
+        window.location.replace('/confirmbook')
         toast.success('Successfully Logged in!')
         
     } catch (err) {
@@ -45,7 +45,7 @@ export default function Login() {
               </div>
         </div>
       </div>
-      <div className=' flex-[2.5] h-screen w-full lg:block hidden' style={{"backgroundImage":"url('https://images.unsplash.com/photo-1650034605038-c12067e5f299?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDd8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60')","backgroundRepeat":"none","objectFit":"cover"}}>
+      <div className=' flex-[2.5] min-h-screen bg-[url("https://images.unsplash.com/photo-1650034605038-c12067e5f299?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDd8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60")] bg-cover bg-center w-full lg:block hidden  ' >
       </div>
       <Toaster
         position="bottom-right"
