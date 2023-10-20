@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast'
+import Footer from '@/Components/Footer'
 export default function Login() {
     const [Email,SetEmail] = useState('')
     const [Password, SetPassword] = useState('')
@@ -23,7 +24,7 @@ export default function Login() {
     }
   return (
     <div className=' lg:flex justify-between items-center'>
-      <div className='flex-[4] bg-gray-300 min-h-screen lg:pl-10'>
+      <div className='flex-[4] bg-gray-300 lg:min-h-screen  lg:pl-10'>
         <div className=' py-14 px-4'>
           <h1 className=' lg:text-3xl text-2xl font-raleway text-rose-600 py-4'>Good to see you here!</h1>
           <p className=' lg:text-xl text-lg font-poppins text-rose-700 py-2'>Register now to Pure-Life-Portal.</p>
@@ -44,6 +45,9 @@ export default function Login() {
         </div>
       </div>
       <div className=' flex-[2.5] min-h-screen bg-[url("https://plus.unsplash.com/premium_photo-1671751035347-e308f0a19b28?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Z3JhZGllbnR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60")] bg-cover bg-center w-full lg:block hidden  ' >
+    </div>
+    <div className=' lg:hidden block'>
+      <Footer/>
     </div>
       <Toaster
         position="bottom-right"

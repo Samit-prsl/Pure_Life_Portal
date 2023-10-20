@@ -22,8 +22,7 @@ export default function Footer() {
           <h1 className=' text-red-950 font-cinzel lg:text-xl text-lg'>For Users</h1>
           <Link href='/registeruser' className=' text-sky-950 font-cinzel lg:text-xl text-lg'>Register</Link>
           <Link href='/loginuser' className=' text-sky-950 font-cinzel lg:text-xl text-lg'>Login</Link>
-        </div>
-        
+        </div>  
       </div>
       <h1 className=' font-quicksand lg:text-xl text-lg text-sky-950 lg:mt-16 lg:text-center mt-5'>	&#169; All rights Reserved</h1>
     </div>
