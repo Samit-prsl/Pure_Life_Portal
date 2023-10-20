@@ -43,8 +43,8 @@ export default function Login() {
               </div>
         </div>
       </div>
-      <div className=' flex-[2.5] h-screen w-full lg:block hidden' style={{"backgroundImage":"url('https://plus.unsplash.com/premium_photo-1671751035347-e308f0a19b28?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Z3JhZGllbnR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60')","backgroundRepeat":"none","objectFit":"cover"}}>
-      </div>
+      <div className=' flex-[2.5] min-h-screen bg-[url("https://plus.unsplash.com/premium_photo-1671751035347-e308f0a19b28?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Z3JhZGllbnR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60")] bg-cover bg-center w-full lg:block hidden  ' >
+    </div>
       <Toaster
         position="bottom-right"
         reverseOrder={false}
