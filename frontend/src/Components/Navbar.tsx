@@ -13,10 +13,10 @@ export default function Navbar() {
       <h1 className=' font-cinzel lg:text-5xl text-2xl text-sky-800'>Pure <span className=' font-raleway lg:text-2xl text-xl text-rose-800'>Life</span> Portal</h1>
       <div className=' font-quicksand text-rose-950 text-3xl lg:block hidden'>
         <ul className=' flex justify-between items-center gap-8'>
-          <li className=' cursor-pointer hover:text-rose-600'>Home</li>
-          <li className=' cursor-pointer hover:text-rose-600'>About</li>
-          <li className=' cursor-pointer hover:text-rose-600'><Link href='showevents'>Events</Link></li>
-          <li className=' cursor-pointer hover:text-rose-600'>Contact</li>
+          <li className=' cursor-pointer hover:text-rose-600'><Link href='/'>Home</Link></li>
+          <li className=' cursor-pointer hover:text-rose-600'><Link href='/#about'>About</Link></li>
+          <li className=' cursor-pointer hover:text-rose-600'><Link href='/showevents'>Events</Link></li>
+          <li className=' cursor-pointer hover:text-rose-600'><Link href='/#contact'>Contact</Link></li>
         </ul>
       </div>
        {Dropdown ? 
@@ -27,10 +27,10 @@ export default function Navbar() {
          <RxCross1 className='  text-xl' onClick={dropdown}/>
          </div>
         <ul className=' flex flex-col justify-between items-center gap-5'>
-          <li className=' cursor-pointer hover:text-rose-600'>Home</li>
-          <li className=' cursor-pointer hover:text-rose-600'>About</li>
-          <li className=' cursor-pointer hover:text-rose-600'><Link href='showevents'>Events</Link></li>
-          <li className=' cursor-pointer hover:text-rose-600'>Contact</li>
+          <li className=' cursor-pointer hover:text-rose-600'><Link href='/'>Home</Link></li>
+          <li className=' cursor-pointer hover:text-rose-600'><Link href='/#about'>About</Link></li>
+          <li className=' cursor-pointer hover:text-rose-600'><Link href='/showevents'>Events</Link></li>
+          <li className=' cursor-pointer hover:text-rose-600'><Link href='/#contact'>Contact</Link></li>
         </ul>
         </div>
        </div>

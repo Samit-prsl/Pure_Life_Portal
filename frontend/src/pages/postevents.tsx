@@ -25,6 +25,7 @@ export default function Postevents() {
         console.log(response.data)
         toast.success('Successfully posted an event!')
         SetLoading(false)
+        window.location.replace('/getorgdata')
       } catch (err) {
         console.log(err)
         toast.error("Cannot post the event!")

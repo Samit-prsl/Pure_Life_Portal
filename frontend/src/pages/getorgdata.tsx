@@ -15,8 +15,13 @@ export default function Getorgdata() {
                     Authorization : `Bearer ${token}`
                 }
             })
-            SetData(response.data.User[0].Events);
-            console.log(response.data.User[0].Events);    
+            const data = response.data.User[0].Events
+            if (data.length != 0) {
+              SetData(data);
+              console.log(Data);  
+            }   
+            else 
+              SetData([])
         } catch (err) {
             console.log(err)
         }
@@ -33,8 +38,8 @@ export default function Getorgdata() {
               <Link href='/'><AiOutlineHome className=' text-gray-600 cursor-pointer'/></Link>
         </div>
        <div className='lg:block flex justify-center items-center'>
-       <div className=' lg:flex lg:justify-center items-center lg:flex-shrink py-8 lg:px-8'>
-          {Data ? ( Data.map((items:any,index:number)=>(
+       <div className=' lg:flex lg:justify-center items-center lg:flex-wrap py-8 lg:px-8'>
+          {(Data.length != 0) ? ( Data.map((items:any,index:number)=>(
               <div className='  w-72 bg-sky-300 lg:m-5 my-5 p-5 flex justify-between items-center flex-col ' key={index}>
                 <h1 className='lg:text-2xl text-xl font-raleway text-slate-800 pb-8'>{items.Title}</h1>
                 <div className=' flex justify-between items-center gap-10'>

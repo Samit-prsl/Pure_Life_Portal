@@ -10,8 +10,8 @@ export default function Footer() {
       <div className=' flex flex-col justify-between lg:mt-0 mt-5'>
           <h1 className=' text-red-950 font-cinzel lg:text-xl text-lg py-5'>Quick Links</h1>
           <Link href='/' className=' text-sky-950 font-cinzel lg:text-xl text-lg'>Home</Link>
-          <Link href='/' className=' text-sky-950 font-cinzel lg:text-xl text-lg'>About</Link>
-          <Link href='/' className=' text-sky-950 font-cinzel lg:text-xl text-lg'>Contact Us</Link>
+          <Link href='/#about' className=' text-sky-950 font-cinzel lg:text-xl text-lg'>About</Link>
+          <Link href='/#contact' className=' text-sky-950 font-cinzel lg:text-xl text-lg'>Contact Us</Link>
         </div>
         <div className=' flex flex-col justify-between lg:mt-0 mt-5 py-5'>
           <h1 className=' text-red-950 font-cinzel lg:text-xl text-lg'>For Organizations</h1>

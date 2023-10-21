@@ -2,6 +2,7 @@ import axios from 'axios'
 import React,{useEffect,useState} from 'react'
 import Link from 'next/link'
 import {AiOutlineHome} from 'react-icons/ai'
+import Footer from '@/Components/Footer'
 export default function Attenders() {
     const [Data,SetData] = useState([])
     const GetData = async ()=>{
@@ -14,6 +15,8 @@ export default function Attenders() {
             }
         })
         SetData(response.data.Message)  
+        console.log(Data);
+        
        } catch (err) {
         console.log(err);
        }
@@ -38,9 +41,14 @@ export default function Attenders() {
                 )
             })
             :
-            ""}
+            <>
+             <div className=' h-screen flex justify-center items-center'>
+                <h1 className='lg:text-2xl text-xl font-raleway text-slate-800 pb-8'>No Bookings yet!</h1>
+            </div>
+            </>}
         </div>
         </div>
+        <Footer/>
     </div>
   )
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast'
+import Footer from '@/Components/Footer'
 export default function Login() {
     const [Email,SetEmail] = useState('')
     const [Password, SetPassword] = useState('')
@@ -57,6 +58,9 @@ export default function Login() {
     </div>
     <div className=' flex-[2.5] min-h-screen bg-[url("https://images.unsplash.com/photo-1626908013351-800ddd734b8a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60")] bg-cover bg-center w-full lg:block hidden  ' >
     </div>
+    <div className=' lg:hidden block'>
+          <Footer/>
+      </div>
     <Toaster
       position="bottom-right"
       reverseOrder={false}
