@@ -4,6 +4,7 @@ import Slider from './Slider'
 import About from './About'
 import Contact from './Contact'
 
+
 export default function Layout() {
   return (
    <>

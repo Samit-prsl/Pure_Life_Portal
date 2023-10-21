@@ -3,6 +3,7 @@ import Head from 'next/head'
 //import { Inter,Quicksand,Cinzel } from '@next/font/google'
 //import Navbar from '@/Components/Navbar'
 import Layout from '@/Components/Layout'
+import Footer from '@/Components/Footer'
 //import styles from '@/styles/Home.module.css'
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
       <div className=' bg-gray-300 min-h-screen p-6'>
         <Layout/>
       </div>
+      <Footer/>
     </>
   )
 }
