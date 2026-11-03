@@ -1,30 +1,77 @@
 import React from 'react'
 import Link from 'next/link'
+import { Container } from './ui'
+
+const columns = [
+  {
+    title: 'Explore',
+    links: [
+      { label: 'Home', href: '/' },
+      { label: 'About', href: '/#about' },
+      { label: 'Events', href: '/showevents' },
+      { label: 'Contact', href: '/#contact' },
+    ],
+  },
+  {
+    title: 'For Organizations',
+    links: [
+      { label: 'Register', href: '/registerorg' },
+      { label: 'Login', href: '/loginorg' },
+    ],
+  },
+  {
+    title: 'For Users',
+    links: [
+      { label: 'Register', href: '/registeruser' },
+      { label: 'Login', href: '/loginuser' },
+    ],
+  },
+]
+
 export default function Footer() {
   return (
-    <div className=' bg-slate-400 p-8'>
-      <div className=' lg:flex lg:justify-between '>
-      <div className=' flex justify-center items-center'>
-      <h1 className=' font-cinzel lg:text-2xl text-xl text-sky-800'>Pure <span className=' font-raleway lg:text-xl text-lg text-rose-800'>Life</span> Portal</h1>
-      </div>
-      <div className=' flex flex-col justify-between lg:mt-0 mt-5'>
-          <h1 className=' text-red-950 font-cinzel lg:text-xl text-lg py-5'>Quick Links</h1>
-          <Link href='/' className=' text-sky-950 font-cinzel lg:text-xl text-lg'>Home</Link>
-          <Link href='/#about' className=' text-sky-950 font-cinzel lg:text-xl text-lg'>About</Link>
-          <Link href='/#contact' className=' text-sky-950 font-cinzel lg:text-xl text-lg'>Contact Us</Link>
+    <footer className="border-t border-zinc-200 bg-white">
+      <Container className="py-12">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="max-w-xs">
+            <Link
+              href="/"
+              className="text-lg font-semibold tracking-tight text-zinc-900"
+            >
+              Pure<span className="text-emerald-600">Life</span> Portal
+            </Link>
+            <p className="mt-3 text-sm leading-6 text-zinc-500">
+              Connecting people with the socio-medical services and community
+              events that matter most.
+            </p>
+          </div>
+
+          {columns.map((column) => (
+            <div key={column.title}>
+              <h2 className="text-sm font-semibold text-zinc-900">
+                {column.title}
+              </h2>
+              <ul className="mt-4 space-y-2.5">
+                {column.links.map((link) => (
+                  <li key={link.href + link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-zinc-500 transition-colors hover:text-zinc-900"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-        <div className=' flex flex-col justify-between lg:mt-0 mt-5 py-5'>
-          <h1 className=' text-red-950 font-cinzel lg:text-xl text-lg'>For Organizations</h1>
-          <Link href='/registerorg' className=' text-sky-950 font-cinzel lg:text-xl text-lg'>Register</Link>
-          <Link href='/loginorg' className=' text-sky-950 font-cinzel lg:text-xl text-lg'>Login</Link>
+
+        <div className="mt-10 border-t border-zinc-200 pt-6 text-sm text-zinc-500">
+          &copy; {new Date().getFullYear()} Pure Life Portal. All rights
+          reserved.
         </div>
-        <div className=' flex flex-col justify-between lg:mt-0 mt-5 py-5'>
-          <h1 className=' text-red-950 font-cinzel lg:text-xl text-lg'>For Users</h1>
-          <Link href='/registeruser' className=' text-sky-950 font-cinzel lg:text-xl text-lg'>Register</Link>
-          <Link href='/loginuser' className=' text-sky-950 font-cinzel lg:text-xl text-lg'>Login</Link>
-        </div>  
-      </div>
-      <h1 className=' font-quicksand lg:text-xl text-lg text-sky-950 lg:mt-16 lg:text-center mt-5'>	&#169; All rights Reserved</h1>
-    </div>
+      </Container>
+    </footer>
   )
 }

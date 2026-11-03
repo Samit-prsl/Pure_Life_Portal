@@ -5,14 +5,16 @@ module.exports = {
   ],
   theme: {
     extend: {
-      fontFamily : {
-        cinzel : ['var(--font-cinzel)'],
-        quicksand : ['var(--font-quicksand)'],
-        poppins : ['var(--font-poppins)'],
-        raleway : ['var(--font-raleway)']
-      }
+      fontFamily: {
+        sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      },
+      boxShadow: {
+        card: '0 1px 2px 0 rgb(0 0 0 / 0.04), 0 1px 3px 0 rgb(0 0 0 / 0.06)',
+      },
+      maxWidth: {
+        content: '72rem',
+      },
     },
   },
   plugins: [],
 }
-

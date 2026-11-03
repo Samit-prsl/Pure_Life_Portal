@@ -1,44 +1,112 @@
 import Link from 'next/link'
 import React from 'react'
+import { buttonStyles, Card, Container } from './ui'
+
+const organizations = [
+  'A hub to showcase your events, programs, and initiatives.',
+  'Tools to efficiently update and manage your events, ensuring the most accurate and up-to-date information.',
+  'Increased visibility within our community, allowing you to reach your target audience more effectively.',
+]
+
+const users = [
+  'A user-friendly platform to explore and access a wide range of socio-medical services.',
+  'A space to connect with like-minded individuals and share experiences and insights.',
+  'The ability to seek help, share stories, and engage with the community for support and information.',
+]
+
+function FeatureCard({
+  image,
+  title,
+  items,
+  href,
+  cta,
+}: {
+  image: string
+  title: string
+  items: string[]
+  href: string
+  cta: string
+}) {
+  return (
+    <Card className="flex flex-col overflow-hidden p-0">
+      <div className="aspect-[16/9] overflow-hidden bg-zinc-100">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={image} alt="" className="h-full w-full object-cover" />
+      </div>
+      <div className="flex flex-1 flex-col p-6 sm:p-8">
+        <h3 className="text-xl font-semibold tracking-tight text-zinc-900">
+          {title}
+        </h3>
+        <ul className="mt-5 space-y-3">
+          {items.map((item) => (
+            <li key={item} className="flex gap-3 text-sm leading-6 text-zinc-600">
+              <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-emerald-500" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+        <div className="mt-auto pt-8">
+          <Link href={href} className={`${buttonStyles('primary', 'md')} w-full`}>
+            {cta}
+          </Link>
+        </div>
+      </div>
+    </Card>
+  )
+}
 
 export default function About() {
   return (
-    <div className=' py-16 font-quicksand lg:text-2xl text-xl text-sky-800 lg:px-8' id='about'>
-      <h1 className=' lg:text-4xl text-2xl font-cinzel text-sky-950'>What we do?</h1>
-      <p className=' py-6'>Welcome to Pure <span className=' text-rose-500 font-cinzel text-lg'>Life</span> Portal, your go-to platform for the intersection of social well-being and medical services. We are dedicated to fostering a vibrant online community that connects individuals seeking essential socio-medical services with registered organizations striving to make a positive impact.</p>
-      <h1 className='text-center lg:text-3xl text-2xl font-cinzel text-sky-950 py-5'>-----Our Mission-----</h1>
-      <p className=' py-6'>At Pure <span className=' text-rose-500 font-cinzel text-lg'>Life</span> Portal, we believe in the power of collaboration. Our mission is to bridge the gap between those in need of socio-medical services and the organizations working tirelessly to provide them. We are committed to promoting inclusivity, health, and well-being within our society by offering a digital space for people to find, share, and support events, resources, and services that matter most to them.</p>
-      <h1 className='text-center lg:text-3xl text-2xl font-cinzel text-sky-950 py-5'>--What we offer?--</h1>
-      <div className='  py-8 gap-5 lg:flex'>
-         <div className=' bg-slate-300 shadow-2xl lg:w-1/2 w-full p-5 py-6 my-4 lg:my-0'>
-           <div className=' flex justify-center items-center'>
-             <img src="https://plus.unsplash.com/premium_photo-1681505195930-388c317b7a76?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGNvbW11bml0eXxlbnwwfHwwfHx8MA%3D%3D" alt="" />
-           </div>
-           <h1 className='text-center lg:text-3xl text-2xl font-cinzel text-sky-950 py-5 '>For Organizations</h1>
-            <ol className=' py-6 px-5'>
-                <li>1) A hub to showcase your events, programs, and initiatives.</li>
-                <li>2) Tools to efficiently update and manage your events, ensuring the most accurate and up-to-date information.</li>
-                <li>3) Increased visibility within our community, allowing you to reach your target audience more effectively.</li>
-            </ol>
-            <div className=' flex justify-center items-center'>
-                <Link href='/registerorg'><button className=' px-5 py-2 bg-sky-500 text-rose-950 font-poppins w-full hover:bg-sky-300'>Join now!</button></Link>
-            </div>
-         </div>
-         <div className=' bg-slate-300 shadow-2xl lg:w-1/2 w-full p-5 py-6'>
-           <div className=' flex justify-center items-center'>
-             <img src="https://images.unsplash.com/photo-1443916568596-df5a58c445e9?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjd8fGhhcHB5JTIwY3VzdG9tZXJ8ZW58MHx8MHx8fDA%3D" alt="" />
-           </div>
-           <h1 className='text-center lg:text-3xl text-2xl font-cinzel text-sky-950 py-5 '>For users</h1>
-            <ol className=' py-6 px-5'>
-                <li>1) A user-friendly platform to explore and access a wide range of socio-medical services.</li>
-                <li>2) A space to connect with like-minded individuals and share experiences and insights.</li>
-                <li>3) The ability to seek help, share stories, and engage with the community for support and information.</li>
-            </ol>
-            <div className=' flex justify-center items-center py-4'>
-                <Link href='/showevents'><button className=' px-5 py-2 bg-sky-500 text-rose-950 font-poppins w-full hover:bg-sky-300'>See Events now</button></Link>
-            </div>
-       </div>
-      </div>
-    </div>
+    <section id="about" className="bg-zinc-50 py-16 sm:py-24">
+      <Container>
+        <div className="max-w-3xl">
+          <p className="text-sm font-semibold uppercase tracking-widest text-emerald-600">
+            What we do
+          </p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
+            Bridging people and the organizations that serve them.
+          </h2>
+          <p className="mt-5 text-lg leading-8 text-zinc-600">
+            Welcome to Pure{' '}
+            <span className="font-semibold text-emerald-600">Life</span> Portal,
+            your go-to platform for the intersection of social well-being and
+            medical services. We connect individuals seeking essential
+            socio-medical services with registered organizations striving to
+            make a positive impact.
+          </p>
+        </div>
+
+        <div className="mt-10 rounded-xl border-l-4 border-emerald-500 bg-white p-6 ring-1 ring-zinc-200 sm:p-8">
+          <h3 className="text-lg font-semibold text-zinc-900">Our mission</h3>
+          <p className="mt-2 text-sm leading-7 text-zinc-600">
+            At Pure{' '}
+            <span className="font-semibold text-emerald-600">Life</span> Portal,
+            we believe in the power of collaboration. Our mission is to bridge
+            the gap between those in need of socio-medical services and the
+            organizations working tirelessly to provide them. We are committed
+            to promoting inclusivity, health, and well-being by offering a
+            digital space to find, share, and support events and services that
+            matter most.
+          </p>
+        </div>
+
+        <div className="mt-10 grid gap-6 lg:grid-cols-2">
+          <FeatureCard
+            title="For organizations"
+            items={organizations}
+            href="/registerorg"
+            cta="Join now"
+            image="https://plus.unsplash.com/premium_photo-1681505195930-388c317b7a76?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGNvbW11bml0eXxlbnwwfHwwfHx8MA%3D%3D"
+          />
+          <FeatureCard
+            title="For users"
+            items={users}
+            href="/showevents"
+            cta="See events now"
+            image="https://images.unsplash.com/photo-1443916568596-df5a58c445e9?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjd8fGhhcHB5JTIwY3VzdG9tZXJ8ZW58MHx8MHx8fDA%3D"
+          />
+        </div>
+      </Container>
+    </section>
   )
 }

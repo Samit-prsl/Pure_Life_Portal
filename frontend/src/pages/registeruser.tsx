@@ -1,58 +1,78 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
-import toast, { Toaster } from 'react-hot-toast'
-import Footer from '@/Components/Footer'
-export default function Login() {
-    const [Email,SetEmail] = useState('')
-    const [Password, SetPassword] = useState('')
-    const [Loading,SetLoading] = useState(false)
-    const handlesubmit = async (e:any) =>{
-        e.preventDefault()
-        SetLoading(true)
-        try {
-             await axios.post('https://golang-rest.onrender.com/register',{
-                Email,Password
-            })
-            toast.success('Successfully Registered!')
-            
-        } catch (err) {
-            console.log(err)
-            toast.error("This didn't work, Try with another email")
-        }
-        SetLoading(false)
+import toast from 'react-hot-toast'
+import AuthLayout from '@/Components/AuthLayout'
+import { Button, Field, Input } from '@/Components/ui'
+
+export default function Registeruser() {
+  const [Email, SetEmail] = useState('')
+  const [Password, SetPassword] = useState('')
+  const [Loading, SetLoading] = useState(false)
+
+  const handlesubmit = async (e: any) => {
+    e.preventDefault()
+    SetLoading(true)
+    try {
+      await axios.post('https://golang-rest.onrender.com/register', {
+        Email,
+        Password,
+      })
+      toast.success('Successfully Registered!')
+    } catch (err) {
+      console.log(err)
+      toast.error("This didn't work, Try with another email")
     }
+    SetLoading(false)
+  }
+
   return (
-    <div className=' lg:flex justify-between items-center'>
-      <div className='flex-[4] bg-gray-300 lg:min-h-screen  lg:pl-10'>
-        <div className=' py-14 px-4'>
-          <h1 className=' lg:text-3xl text-2xl font-raleway text-rose-600 py-4'>Good to see you here!</h1>
-          <p className=' lg:text-xl text-lg font-poppins text-rose-700 py-2'>Register now to Pure-Life-Portal.</p>
-              <div className=' py-6'>
-                <p className=' text-sky-800 font-cinzel text-lg'>Email <span className=' text-rose-800 cursor-pointer' title='Required'>*</span></p>
-                <input type="email" name="email" id="useremail" className=' outline-none lg:w-[60%] w-full p-3 my-2 font-poppins bg-gray-100 text-rose-950' onChange={(e)=>{SetEmail(e.target.value)}} />
-              </div>
-              <div className=' py-3'>
-                <p className=' text-sky-800 font-cinzel text-lg'>Password <span className=' text-rose-800 cursor-pointer' title='Required'>*</span></p>
-                <input type="password" name="password" id="userpassword" className=' outline-none lg:w-[60%] w-full p-3 my-2 font-poppins bg-gray-100 text-rose-950' onChange={(e)=>{SetPassword(e.target.value)}} />
-              </div>
-              <div className=' py-2'>
-                  <button className={` px-5 py-2 bg-sky-700 text-rose-950 font-poppins lg:w-[60%] w-full hover:bg-sky-500 ${Loading ? `opacity-50 cursor-not-allowed`:``}`} onClick={handlesubmit}>Register</button>
-              </div>
-              <div className=' py-3'>
-              <p className=' text-sky-800 font-cinzel text-xl '>Registered? <Link href='/loginuser' className=' text-rose-800'>Login now!</Link></p>
-              </div>
-        </div>
-      </div>
-      <div className=' flex-[2.5] min-h-screen bg-[url("https://plus.unsplash.com/premium_photo-1671751035347-e308f0a19b28?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Z3JhZGllbnR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60")] bg-cover bg-center w-full lg:block hidden  ' >
-    </div>
-    <div className=' lg:hidden block'>
-      <Footer/>
-    </div>
-      <Toaster
-        position="bottom-right"
-        reverseOrder={false}
-       />
-    </div>
+    <AuthLayout
+      title="Create your account"
+      subtitle="Good to see you here. Register now to Pure Life Portal."
+      footer={
+        <>
+          Already registered?{' '}
+          <Link
+            href="/loginuser"
+            className="font-medium text-emerald-600 hover:text-emerald-700"
+          >
+            Login now
+          </Link>
+        </>
+      }
+    >
+      <form onSubmit={handlesubmit} className="space-y-5">
+        <Field label="Email" htmlFor="useremail" required>
+          <Input
+            id="useremail"
+            type="email"
+            name="email"
+            autoComplete="email"
+            placeholder="you@example.com"
+            onChange={(e) => {
+              SetEmail(e.target.value)
+            }}
+          />
+        </Field>
+
+        <Field label="Password" htmlFor="userpassword" required>
+          <Input
+            id="userpassword"
+            type="password"
+            name="password"
+            autoComplete="new-password"
+            placeholder="Create a password"
+            onChange={(e) => {
+              SetPassword(e.target.value)
+            }}
+          />
+        </Field>
+
+        <Button type="submit" loading={Loading} className="w-full">
+          Register
+        </Button>
+      </form>
+    </AuthLayout>
   )
 }

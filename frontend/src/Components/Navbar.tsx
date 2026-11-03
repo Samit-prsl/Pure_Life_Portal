@@ -1,47 +1,74 @@
 import React, { useState } from 'react'
-import {VscThreeBars} from 'react-icons/vsc'
-import {RxCross1} from 'react-icons/rx'
+import { VscThreeBars } from 'react-icons/vsc'
+import { RxCross1 } from 'react-icons/rx'
 import Link from 'next/link'
+import { Container } from './ui'
+
+const links = [
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/#about' },
+  { label: 'Events', href: '/showevents' },
+  { label: 'Contact', href: '/#contact' },
+]
+
 export default function Navbar() {
-  const [Dropdown,SetDropdown] = useState(false) 
-  const dropdown = ():void => {
+  const [Dropdown, SetDropdown] = useState(false)
+  const dropdown = (): void => {
     SetDropdown(!Dropdown)
   }
   return (
-    <>
-    <div className=' lg:h-20 h-16 w-full flex justify-between items-center border-b-2 border-gray-700'>
-      <h1 className=' font-cinzel lg:text-5xl text-2xl text-sky-800'>Pure <span className=' font-raleway lg:text-2xl text-xl text-rose-800'>Life</span> Portal</h1>
-      <div className=' font-quicksand text-rose-950 text-3xl lg:block hidden'>
-        <ul className=' flex justify-between items-center gap-8'>
-          <li className=' cursor-pointer hover:text-rose-600'><Link href='/'>Home</Link></li>
-          <li className=' cursor-pointer hover:text-rose-600'><Link href='/#about'>About</Link></li>
-          <li className=' cursor-pointer hover:text-rose-600'><Link href='/showevents'>Events</Link></li>
-          <li className=' cursor-pointer hover:text-rose-600'><Link href='/#contact'>Contact</Link></li>
-        </ul>
-      </div>
-       {Dropdown ? 
-       <>
-       <div className=' lg:hidden block h-full w-1/2 z-10'>
-       <div className=' bg-gradient-to-br from-sky-300 to-pink-200 font-quicksand text-rose-950 text-xl px-5 py-2  border-gray-700 border-2 '>
-         <div className=' flex justify-end py-2'>
-         <RxCross1 className='  text-xl' onClick={dropdown}/>
-         </div>
-        <ul className=' flex flex-col justify-between items-center gap-5'>
-          <li className=' cursor-pointer hover:text-rose-600'><Link href='/'>Home</Link></li>
-          <li className=' cursor-pointer hover:text-rose-600'><Link href='/#about'>About</Link></li>
-          <li className=' cursor-pointer hover:text-rose-600'><Link href='/showevents'>Events</Link></li>
-          <li className=' cursor-pointer hover:text-rose-600'><Link href='/#contact'>Contact</Link></li>
-        </ul>
+    <header className="sticky top-0 z-40 border-b border-zinc-200 bg-white/80 backdrop-blur">
+      <Container className="flex h-16 items-center justify-between lg:h-20">
+        <Link
+          href="/"
+          className="text-lg font-semibold tracking-tight text-zinc-900 sm:text-xl"
+        >
+          Pure<span className="text-emerald-600">Life</span> Portal
+        </Link>
+
+        <nav className="hidden items-center gap-1 lg:flex">
+          {links.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="rounded-lg px-3 py-2 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <button
+          type="button"
+          onClick={dropdown}
+          aria-label="Toggle navigation menu"
+          aria-expanded={Dropdown}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-900 lg:hidden"
+        >
+          {Dropdown ? (
+            <RxCross1 className="text-xl" />
+          ) : (
+            <VscThreeBars className="text-xl" />
+          )}
+        </button>
+      </Container>
+
+      {Dropdown && (
+        <div className="border-t border-zinc-200 bg-white lg:hidden">
+          <Container className="flex flex-col py-2">
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => SetDropdown(false)}
+                className="rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </Container>
         </div>
-       </div>
-       </>
-       :
-       <>
-       <div className=' lg:hidden block'>
-       <VscThreeBars className=' text-3xl text-rose-950 hover:text-rose-600 cursor-pointer' onClick={dropdown}/>
-       </div>
-       </>}
-    </div>
-    </>
+      )}
+    </header>
   )
 }

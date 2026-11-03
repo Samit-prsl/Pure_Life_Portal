@@ -1,98 +1,201 @@
 import axios from 'axios'
-import React, {useState} from 'react'
-import toast, { Toaster } from 'react-hot-toast'
-export default function Postevents() {
-  const [Title,SetTitle] = useState('')
+import React, { useState } from 'react'
+import toast from 'react-hot-toast'
+import Link from 'next/link'
+import {
+  Button,
+  buttonStyles,
+  Card,
+  Container,
+  Field,
+  Input,
+  PageHeader,
+  Textarea,
+} from '@/Components/ui'
+
+export default function Updatevent() {
+  const [Title, SetTitle] = useState('')
   const [Desc, SetDesc] = useState('')
   const [Address, SetAddress] = useState('')
   const [Date, SetDate] = useState('')
   const [Strength2, SetStrength2] = useState(0)
-  const [Loading,SetLoading] = useState(false)
-  const handlesubmit = async (e:any) =>{
-    SetLoading(true)
-      try {
-        const token = localStorage.getItem('token')
-        const ID:number = Number(localStorage.getItem('Eventid'))
-        const Strength = Strength2 + 1
-        const data = {
-          Title,Desc,Address,Date,Strength
-        }
-        const response = await axios.put(`https://golang-rest.onrender.com/updatevent/${ID}`,data
-        ,{
-          headers : {
-            Authorization : `Bearer ${token}`
-          }
-        })
-        console.log(response.data)
-        toast.success('Successfully posted an event!')
-        SetLoading(false)
-        window.location.replace('/getorgdata')
-      } catch (err) {
-        console.log(err)
-        toast.error("Cannot post the event!")
-        SetLoading(false)
-      }
-  }
-  const handledelete = async () =>{
+  const [Loading, SetLoading] = useState(false)
+
+  const handlesubmit = async (e: any) => {
+    e.preventDefault()
     SetLoading(true)
     try {
-        const token = localStorage.getItem('token')
-        const ID:number = Number(localStorage.getItem('Eventid'))
-        const response = await axios.delete(`https://golang-rest.onrender.com/deletevent/${ID}`,{
-            headers : {
-                Authorization : `Bearer ${token}`
-            }
-        })
-        console.log(response.data)
-        toast.success('Successfully deleted the event!')
-        SetLoading(false)
-        window.location.replace('/getorgdata')
+      const token = localStorage.getItem('token')
+      const ID: number = Number(localStorage.getItem('Eventid'))
+      const Strength = Strength2 + 1
+      const data = {
+        Title,
+        Desc,
+        Address,
+        Date,
+        Strength,
+      }
+      const response = await axios.put(
+        `https://golang-rest.onrender.com/updatevent/${ID}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      console.log(response.data)
+      toast.success('Successfully updated the event!')
+      SetLoading(false)
+      window.location.replace('/getorgdata')
     } catch (err) {
-        console.log(err)
-        toast.error("Cannot delete the event!")    
-        SetLoading(false)    
+      console.log(err)
+      toast.error('Cannot update the event!')
+      SetLoading(false)
     }
   }
+
+  const handledelete = async () => {
+    SetLoading(true)
+    try {
+      const token = localStorage.getItem('token')
+      const ID: number = Number(localStorage.getItem('Eventid'))
+      const response = await axios.delete(
+        `https://golang-rest.onrender.com/deletevent/${ID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      console.log(response.data)
+      toast.success('Successfully deleted the event!')
+      SetLoading(false)
+      window.location.replace('/getorgdata')
+    } catch (err) {
+      console.log(err)
+      toast.error('Cannot delete the event!')
+      SetLoading(false)
+    }
+  }
+
   return (
-   <>
-   <div className=' lg:border-l-[24px] border-l-sky-900 min-h-screen lg:flex'>
-        <div className=' flex-[4] bg-gray-300 min-h-screen lg:pl-10 px-4 py-4'>
-        <h1 className=' lg:text-3xl text-2xl font-raleway text-rose-600 py-4'>We know mistakes can happen!</h1>
-        <p className=' lg:text-xl text-lg font-poppins text-rose-700 py-2'>Update / delete an event here</p>
-            <div className=' py-6'>
-                <p className=' text-sky-800 font-cinzel text-lg'>Title <span className=' text-rose-800 cursor-pointer' title='Required'>*</span></p>
-                <input type="text" name="Title" id="orgtitle" className=' outline-none lg:w-[60%] w-full p-3 my-2 font-poppins bg-gray-100 text-rose-950' onChange={(e)=>{SetTitle(e.target.value)}} />
-            </div>
-            <div className=' py-3'>
-                <p className=' text-sky-800 font-cinzel text-lg'>Description <span className=' text-rose-800 cursor-pointer' title='Required'>*</span></p>
-                <input type="text" name="Desc" id="orgDesc" className=' outline-none lg:w-[60%] w-full p-3 my-2 font-poppins bg-gray-100 text-rose-950' onChange={(e)=>{SetDesc(e.target.value)}} />
-            </div>
-            <div className=' py-3'>
-                <p className=' text-sky-800 font-cinzel text-lg'>Address <span className=' text-rose-800 cursor-pointer' title='Required'>*</span></p>
-                <input type="text" name="Address" id="orgaddress" className=' outline-none lg:w-[60%] w-full p-3 my-2 font-poppins bg-gray-100 text-rose-950' onChange={(e)=>{SetAddress(e.target.value)}} />
-            </div>
-            <div className=' py-6'>
-                <p className=' text-sky-800 font-cinzel text-lg'>Date <span className=' text-rose-800 cursor-pointer' title='Required'>*</span></p>
-                <input type="text" name="Date" id="orgDate" className=' outline-none lg:w-[60%] w-full p-3 my-2 font-poppins bg-gray-100 text-rose-950 ' placeholder='DD-MM-YYYY format' onChange={(e)=>{SetDate(e.target.value)}} />
-            </div>
-            <div className=' py-6'>
-                <p className=' text-sky-800 font-cinzel text-lg'>Number of people to attend <span className=' text-rose-800 cursor-pointer' title='Required'>*</span></p>
-                <input type="text" name="Strength" id="orgstrength" className=' outline-none lg:w-[60%] w-full p-3 my-2 font-poppins bg-gray-100 text-rose-950' onChange={(e)=>{
-                  const strength = parseInt(e.target.value)
-                  SetStrength2(strength)}} />
-            </div>
-            <div className=' py-2'>
-              <button className={` px-5 py-2 bg-sky-700 text-rose-950 font-poppins lg:w-[60%] w-full hover:bg-sky-500 ${Loading ? `opacity-50 cursor-wait`:``}`} onClick={handlesubmit}>Update</button>
-              <button className={` px-5 py-2 my-4 bg-sky-700 text-rose-950 font-poppins lg:w-[60%] w-full hover:bg-sky-500 ${Loading ? `opacity-50 cursor-wait`:``}`} onClick={handledelete}>Delete permanently</button>
+    <div className="min-h-screen bg-zinc-50">
+      <PageHeader
+        title="Update event"
+        description="Mistakes happen. Update or delete an event here."
+        action={
+          <Link href="/getorgdata" className={buttonStyles('secondary', 'sm')}>
+            Back to events
+          </Link>
+        }
+      />
+
+      <Container className="py-10">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+          <Card className="p-6 sm:p-8">
+            <form onSubmit={handlesubmit} className="space-y-5">
+              <Field label="Title" htmlFor="updatetitle" required>
+                <Input
+                  id="updatetitle"
+                  type="text"
+                  name="Title"
+                  placeholder="Community health drive"
+                  onChange={(e) => {
+                    SetTitle(e.target.value)
+                  }}
+                />
+              </Field>
+
+              <Field label="Description" htmlFor="updatedesc" required>
+                <Textarea
+                  id="updatedesc"
+                  name="Desc"
+                  rows={4}
+                  placeholder="What is this event about?"
+                  onChange={(e) => {
+                    SetDesc(e.target.value)
+                  }}
+                />
+              </Field>
+
+              <Field label="Address" htmlFor="updateaddress" required>
+                <Input
+                  id="updateaddress"
+                  type="text"
+                  name="Address"
+                  placeholder="Where will it take place?"
+                  onChange={(e) => {
+                    SetAddress(e.target.value)
+                  }}
+                />
+              </Field>
+
+              <div className="grid gap-5 sm:grid-cols-2">
+                <Field
+                  label="Date"
+                  htmlFor="updatedate"
+                  required
+                  hint="Use DD-MM-YYYY format."
+                >
+                  <Input
+                    id="updatedate"
+                    type="text"
+                    name="Date"
+                    placeholder="DD-MM-YYYY"
+                    onChange={(e) => {
+                      SetDate(e.target.value)
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label="Number of people to attend"
+                  htmlFor="updatestrength"
+                  required
+                >
+                  <Input
+                    id="updatestrength"
+                    type="number"
+                    min={0}
+                    name="Strength"
+                    placeholder="50"
+                    onChange={(e) => {
+                      const strength = parseInt(e.target.value)
+                      SetStrength2(strength)
+                    }}
+                  />
+                </Field>
               </div>
+
+              <div className="flex flex-col gap-3 pt-2 sm:flex-row">
+                <Button type="submit" loading={Loading}>
+                  Save changes
+                </Button>
+                <Button
+                  type="button"
+                  variant="danger"
+                  disabled={Loading}
+                  onClick={handledelete}
+                >
+                  Delete permanently
+                </Button>
+              </div>
+            </form>
+          </Card>
+
+          <Card className="h-fit border-0 bg-zinc-900 p-6 text-white ring-zinc-900 sm:p-8">
+            <h2 className="text-lg font-semibold">Editing an event</h2>
+            <p className="mt-3 text-sm leading-6 text-zinc-300">
+              Changes are visible to everyone browsing events. Update the details
+              carefully, especially the date and capacity.
+            </p>
+            <p className="mt-4 border-t border-white/10 pt-4 text-sm leading-6 text-zinc-300">
+              Deleting an event is permanent and cannot be undone.
+            </p>
+          </Card>
         </div>
-        <div className=' flex-[2.5] min-h-screen bg-[url("https://images.unsplash.com/photo-1496096265110-f83ad7f96608?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDZ8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60")] bg-cover bg-center w-full lg:block hidden '>
-        </div>
-        <Toaster
-        position="bottom-right"
-        reverseOrder={false}
-       />
-   </div>
-   </>
+      </Container>
+    </div>
   )
 }

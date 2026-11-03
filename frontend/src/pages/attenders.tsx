@@ -1,55 +1,80 @@
 import axios from 'axios'
-import React,{useEffect,useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import {AiOutlineHome} from 'react-icons/ai'
+import { AiOutlineHome } from 'react-icons/ai'
 import Footer from '@/Components/Footer'
+import {
+  buttonStyles,
+  Card,
+  Container,
+  EmptyState,
+  PageHeader,
+} from '@/Components/ui'
+
 export default function Attenders() {
-    const [Data,SetData] = useState([])
-    const GetData = async ()=>{
-       try {
-        const ID:number = Number(localStorage.getItem('Eventid'))
-        const token = localStorage.getItem('token')
-        const response = await axios.get(`https://golang-rest.onrender.com/attendingusers/${ID}`,{
-            headers : {
-                Authorization : `Bearer ${token}`
-            }
-        })
-        SetData(response.data.Message)  
-        console.log(Data);
-        
-       } catch (err) {
-        console.log(err);
-       }
+  const [Data, SetData] = useState<any[]>([])
+
+  const GetData = async () => {
+    try {
+      const ID: number = Number(localStorage.getItem('Eventid'))
+      const token = localStorage.getItem('token')
+      const response = await axios.get(
+        `https://golang-rest.onrender.com/attendingusers/${ID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      SetData(response.data.Message)
+    } catch (err) {
+      console.log(err)
     }
-    useEffect(()=>{
-        GetData()
-    },[])
+  }
+
+  useEffect(() => {
+    GetData()
+  }, [])
+
   return (
-    <div>
-       <div className=' bg-gray-300 min-h-screen p-6'>
-        <div className=' border-b-4 border-b-sky-800 h-14 font-cinzel lg:text-3xl flex justify-between px-3 text-xl text-rose-800'>
-              <h1 className=' pb-2 lg:pb-0'>Users Attending this Event</h1>
-              <Link href='/'><AiOutlineHome className=' text-gray-600 cursor-pointer'/></Link>
-        </div>
-        <div className=' lg:block flex justify-center items-center p-5'>
-            {Data ? 
-            Data.map((items:any,index:number)=>{
-                return (
-                    <div className=' lg:h-14  bg-slate-400 text-sky-950 font-raleway p-3 my-3' key={index}>
-                        <h1 className=' lg:text-2xl text-xl'><span className=' font-quicksand text-rose-800 lg:text-2xl text-xl'>Email of User  : </span>  {items.user_data.Email}</h1>
-                    </div>
-                )
-            })
-            :
-            <>
-             <div className=' h-screen flex justify-center items-center'>
-                <h1 className='lg:text-2xl text-xl font-raleway text-slate-800 pb-8'>No Bookings yet!</h1>
-            </div>
-            </>}
-        </div>
-        </div>
-        <Footer/>
+    <div className="min-h-screen bg-zinc-50">
+      <PageHeader
+        title="Attenders"
+        description="Users attending this event."
+        action={
+          <Link href="/" className={buttonStyles('secondary', 'sm')}>
+            <AiOutlineHome className="text-base" />
+            Home
+          </Link>
+        }
+      />
+
+      <Container className="py-10">
+        {Data.length === 0 ? (
+          <EmptyState
+            title="No bookings yet"
+            description="No one has booked this event yet."
+          />
+        ) : (
+          <Card className="divide-y divide-zinc-100">
+            {Data.map((items: any, index: number) => (
+              <div
+                key={index}
+                className="flex flex-col gap-1 px-6 py-4 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <span className="text-sm font-medium text-zinc-500">
+                  Email of user
+                </span>
+                <span className="text-sm text-zinc-900">
+                  {items.user_data.Email}
+                </span>
+              </div>
+            ))}
+          </Card>
+        )}
+      </Container>
+
+      <Footer />
     </div>
   )
-
 }

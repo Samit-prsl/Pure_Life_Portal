@@ -1,27 +1,78 @@
 import React from 'react'
+import { Button, Card, Container, Field, Input, Textarea } from './ui'
 
 export default function Contact() {
   return (
-    <div id='contact' className='p-6'>
-      <h1 className=' lg:text-4xl text-2xl font-raleway text-rose-600 py-4'>Get in Touch!</h1>
-     <div className=' lg:flex gap-24'>
-        <div className=' lg:w-1/2 w-full lg:border-b-0 border-b-2 border-b-gray-500 py-6'>
-        <h1 className=' lg:text-2xl text-xl font-poppins text-sky-600 py-4'>Contact us</h1>
-        <p className=' lg:text-xl text-lg font-quicksand text-rose-400 lg:pb-16 pb-10'>Wellness is the complete integration of body, mind, and spirit – the realization that everything we do, think, feel, and believe has an effect on our state of well-being.</p>     
-        <h1 className=' lg:text-xl text-lg text-sky-800 font-cinzel py-8'>Email : purelifeportal@mail.com</h1>
-        <h1 className=' lg:text-xl text-lg text-sky-800 font-cinzel '>Phone : 9876543210</h1>
-        </div>
-        <div className=' lg:w-1/2 w-full'>
-        <h1 className=' lg:text-2xl text-xl font-poppins text-sky-600 py-4'>Leave a message!</h1>
+    <section id="contact" className="bg-white py-16 sm:py-24">
+      <Container>
+        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
-          <form action="https://formspree.io/f/xnqyvyyb" method='POST' className='bg-gray-300'>
-            <input type="email" required autoComplete='off' name='email' placeholder='Enter Email' className=' bg-gray-300 w-[100%] outline-none placeholder:text-sky-950 border-b-2 border-b-gray-700  p-3' />
-            <textarea name="message" id="" cols={30} rows={10} required placeholder=' Suggesstions or Complains' className=' w-full h-40 bg-gray-400 placeholder:text-sky-950 my-4 p-3 outline-none'/>
-            <button className='px-5 py-2 bg-sky-700 text-rose-950 font-poppins lg:w-[20%] w-full hover:bg-sky-500' type='submit'>Send</button>
-            </form>
+            <p className="text-sm font-semibold uppercase tracking-widest text-emerald-600">
+              Contact
+            </p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
+              Get in touch
+            </h2>
+            <p className="mt-5 max-w-md text-base leading-7 text-zinc-600">
+              Wellness is the complete integration of body, mind, and spirit.
+              Everything we do, think, feel, and believe has an effect on our
+              state of well-being. Reach out and be part of the community.
+            </p>
+
+            <dl className="mt-8 space-y-4 text-sm">
+              <div>
+                <dt className="font-medium text-zinc-900">Email</dt>
+                <dd className="mt-0.5 text-zinc-600">
+                  purelifeportal@mail.com
+                </dd>
+              </div>
+              <div>
+                <dt className="font-medium text-zinc-900">Phone</dt>
+                <dd className="mt-0.5 text-zinc-600">9876543210</dd>
+              </div>
+            </dl>
           </div>
+
+          <Card className="p-6 sm:p-8">
+            <h3 className="text-lg font-semibold text-zinc-900">
+              Leave a message
+            </h3>
+            <form
+              action="https://formspree.io/f/xnqyvyyb"
+              method="POST"
+              className="mt-6 space-y-5"
+            >
+              <Field label="Email" htmlFor="contact-email" required>
+                <Input
+                  id="contact-email"
+                  type="email"
+                  name="email"
+                  required
+                  autoComplete="off"
+                  placeholder="you@example.com"
+                />
+              </Field>
+              <Field
+                label="Message"
+                htmlFor="contact-message"
+                required
+                hint="Suggestions or complaints are welcome."
+              >
+                <Textarea
+                  id="contact-message"
+                  name="message"
+                  rows={5}
+                  required
+                  placeholder="How can we help?"
+                />
+              </Field>
+              <Button type="submit" className="w-full sm:w-auto">
+                Send message
+              </Button>
+            </form>
+          </Card>
         </div>
-    </div>
-    </div>
+      </Container>
+    </section>
   )
 }
