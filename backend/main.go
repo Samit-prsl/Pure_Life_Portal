@@ -3,9 +3,12 @@ package main
 import (
 	// "log"
 	// "net/http"
+	"os"
+
 	controllers "restapi/code/Controllers"
 	initializers "restapi/code/Initializers"
 	"restapi/code/middleware"
+	"restapi/code/models"
 
 	"github.com/gin-gonic/gin"
 	cors "github.com/rs/cors/wrapper/gin"
@@ -14,6 +17,7 @@ import (
 func init() {
 	initializers.DotEnvInit()
 	initializers.DatabaseConnect()
+	initializers.DB.AutoMigrate(&models.Post{}, &models.User{}, &models.Organization{}, &models.UserEvent{})
 }
 
 func main() {
@@ -33,7 +37,12 @@ func main() {
 	r.GET("/Getorg", middleware.GetAuthenticated, controllers.Getorgs)
 	r.PUT("/updatevent/:id", middleware.GetAuthenticated, controllers.UpdateEvent)
 	r.DELETE("/deletevent/:id", middleware.GetAuthenticated, controllers.DeleteEvent)
-	r.Run()
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	r.Run(":" + port)
 }
 
 // c := cors.New(cors.Options{

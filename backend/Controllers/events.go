@@ -79,8 +79,8 @@ func UpdateEvent(c *gin.Context) {
 		Strength uint
 		OrgRefer uint
 	}
-	body.OrgRefer = org.(models.Organization).ID
 	c.Bind(&body)
+	body.OrgRefer = org.(models.Organization).ID
 	result := initializers.DB.Model(&event).Updates(models.Post{Title: body.Title, Desc: body.Desc, Address: body.Address, Date: body.Date, Strength: body.Strength, OrgRefer: body.OrgRefer})
 	if result.Error != nil {
 		c.Status(500)

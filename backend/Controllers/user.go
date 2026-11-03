@@ -88,7 +88,7 @@ func GetUser(c *gin.Context) {
 	ID := c.Param("id")
 	var GetUser models.User
 	result := initializers.DB.Where("id = ?", ID).Find(&GetUser)
-	if result != nil {
+	if result.Error != nil {
 		c.JSON(500, gin.H{
 			"Message": "Cant retrieve organizations",
 		})

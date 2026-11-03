@@ -10,8 +10,8 @@ import (
 
 func Booking(c *gin.Context) {
 	ID := c.Param("id")
-	Id, error := strconv.Atoi(ID)
-	if error != nil {
+	Id, parseErr := strconv.Atoi(ID)
+	if parseErr != nil {
 		c.JSON(404, gin.H{
 			"Message": "Cant take in the Id",
 		})
@@ -44,9 +44,15 @@ func Booking(c *gin.Context) {
 
 	}
 	var post models.Post
-	initializers.DB.Find(&post, ID)
+	findPost := initializers.DB.Find(&post, ID)
+	if findPost.Error != nil || post.ID == 0 {
+		c.JSON(404, gin.H{
+			"Message": "Event not found",
+		})
+		return
+	}
 
-	if post.Strength == 1 {
+	if post.Strength <= 1 {
 		c.JSON(403, gin.H{
 			"Message": "The event cannot add more number of users!",
 		})

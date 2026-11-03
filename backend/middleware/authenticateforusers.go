@@ -16,14 +16,14 @@ import (
 )
 
 func GetAuthenticatedUsers(c *gin.Context) {
-	Authheader := strings.Split(c.GetHeader("Authorization"), " ")[1]
-	fmt.Println(Authheader)
-	if Authheader == "" {
+	parts := strings.Split(c.GetHeader("Authorization"), " ")
+	if len(parts) != 2 || parts[1] == "" {
 		c.JSON(http.StatusUnauthorized, gin.H{
-			"Message": "Unauthorized asf",
+			"Message": "Unauthorized",
 		})
 		return
 	}
+	Authheader := parts[1]
 	token, err := jwt.Parse(Authheader, func(token *jwt.Token) (interface{}, error) {
 
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -32,21 +32,29 @@ func GetAuthenticatedUsers(c *gin.Context) {
 
 		return []byte(os.Getenv("SECRET_KEY")), nil
 	})
+	if err != nil || token == nil {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Invalid token",
+		})
+		return
+	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		if float64(time.Now().Unix()) > claims["exp"].(float64) {
 			c.AbortWithStatus(http.StatusUnauthorized)
+			return
 		}
 		var user models.User
 		initializers.DB.Find(&user, claims["sub"])
 		if user.ID == 0 {
 			c.AbortWithStatus(http.StatusUnauthorized)
+			return
 		}
 		c.Set("User", user)
 		c.Next()
 	} else {
 		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": err,
+			"message": "Invalid token",
 		})
 		return
 	}

@@ -95,7 +95,7 @@ func Getorgs(c *gin.Context) {
 	}
 	ID := org.(models.Organization).ID
 	var Getorgs []models.Organization
-	result := initializers.DB.Find(&models.Organization{}, ID).Preload("Events").Find(&Getorgs).Error
+	result := initializers.DB.Preload("Events").Find(&Getorgs, ID).Error
 	if result != nil {
 		c.JSON(500, gin.H{
 			"Message": "Cant retrieve organizations",
