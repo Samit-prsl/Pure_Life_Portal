@@ -30,12 +30,31 @@ export default function Layout() {
                   href="/showevents"
                   className={buttonStyles('primary', 'lg')}
                 >
-                  Browse events
+                  Find events to attend
                 </Link>
-                <Link href="/#about" className={buttonStyles('secondary', 'lg')}>
-                  Learn more
+                <Link
+                  href="/registerorg"
+                  className={buttonStyles('secondary', 'lg')}
+                >
+                  Organize an event
                 </Link>
               </div>
+              <p className="mt-4 text-sm text-zinc-500">
+                Attending?{' '}
+                <Link
+                  href="/loginuser"
+                  className="font-medium text-emerald-600 hover:text-emerald-700"
+                >
+                  Sign in
+                </Link>{' '}
+                · Organizing?{' '}
+                <Link
+                  href="/loginorg"
+                  className="font-medium text-emerald-600 hover:text-emerald-700"
+                >
+                  Organizer sign in
+                </Link>
+              </p>
             </div>
           </Container>
         </section>

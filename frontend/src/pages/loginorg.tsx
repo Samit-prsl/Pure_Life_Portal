@@ -1,45 +1,61 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import axios from 'axios'
+import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
 import AuthLayout from '@/Components/AuthLayout'
 import { Button, Field, Input } from '@/Components/ui'
+import { api, apiErrorMessage, safeNext } from '@/lib/api'
+import { useAuth } from '@/lib/auth'
 
 export default function Loginorg() {
   const [Email, SetEmail] = useState('')
   const [Password, SetPassword] = useState('')
   const [Loading, SetLoading] = useState(false)
 
-  const handlesubmit = async (e: any) => {
+  const { login, session } = useAuth()
+  const router = useRouter()
+
+  const handlesubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     SetLoading(true)
     try {
-      const res = await axios.post('https://golang-rest.onrender.com/orgLogin', {
-        Email,
-        Password,
+      const res = await api.post('/orgLogin', { Email, Password })
+      login({
+        token: res.data.token,
+        role: 'org',
+        name: res.data.name || res.data.email || Email,
+        email: res.data.email || Email,
       })
-      localStorage.setItem('token', res.data.token)
-      window.location.replace('/navigation')
-      toast.success('Successfully Logged in!')
+      toast.success('Welcome back!')
+      router.push(safeNext(router.query.next, '/navigation'))
     } catch (err) {
-      console.log(err)
-      toast.error('Incorrect Username/Password!')
+      toast.error(apiErrorMessage(err, 'Incorrect email or password!'))
     }
     SetLoading(false)
   }
 
+  useEffect(() => {
+    if (session) {
+      router.replace(session.role === 'org' ? '/navigation' : '/showevents')
+    }
+  }, [session, router])
+
   return (
     <AuthLayout
-      title="Welcome back"
-      subtitle="Login to post events with a social cause."
+      title="Organizer sign in"
+      subtitle="Sign in to post events and manage your attendees."
       footer={
         <>
           Not registered?{' '}
           <Link
-            href="/registerorg"
+            href={`/registerorg${
+              router.query.next
+                ? `?next=${encodeURIComponent(String(router.query.next))}`
+                : ''
+            }`}
             className="font-medium text-emerald-600 hover:text-emerald-700"
           >
-            Register now
+            Register your organization
           </Link>
         </>
       }
@@ -52,9 +68,8 @@ export default function Loginorg() {
             name="email"
             autoComplete="email"
             placeholder="organization@example.com"
-            onChange={(e) => {
-              SetEmail(e.target.value)
-            }}
+            value={Email}
+            onChange={(e) => SetEmail(e.target.value)}
           />
         </Field>
 
@@ -65,15 +80,24 @@ export default function Loginorg() {
             name="password"
             autoComplete="current-password"
             placeholder="Your password"
-            onChange={(e) => {
-              SetPassword(e.target.value)
-            }}
+            value={Password}
+            onChange={(e) => SetPassword(e.target.value)}
           />
         </Field>
 
         <Button type="submit" loading={Loading} className="w-full">
-          Login
+          Sign in
         </Button>
+
+        <p className="text-center text-sm text-zinc-500">
+          Want to attend events instead?{' '}
+          <Link
+            href="/loginuser"
+            className="font-medium text-emerald-600 hover:text-emerald-700"
+          >
+            Attendee sign in
+          </Link>
+        </p>
       </form>
     </AuthLayout>
   )

@@ -1,11 +1,16 @@
-import axios from 'axios'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { GoPeople } from 'react-icons/go'
 import { SlCalender } from 'react-icons/sl'
 import { RxCross1 } from 'react-icons/rx'
 import { AiOutlineHome } from 'react-icons/ai'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import toast from 'react-hot-toast'
 import Footer from '@/Components/Footer'
+import Navbar from '@/Components/Navbar'
+import BookingModal, { BookableEvent } from '@/Components/BookingModal'
+import { useAuth } from '@/lib/auth'
+import { api } from '@/lib/api'
 import {
   Button,
   buttonStyles,
@@ -16,24 +21,46 @@ import {
   Spinner,
 } from '@/Components/ui'
 
+const PENDING_EVENT_KEY = 'pl_pending_event'
+const PENDING_TTL_MS = 15 * 60 * 1000
+
+function readPendingEvent(): string | null {
+  try {
+    const raw = localStorage.getItem(PENDING_EVENT_KEY)
+    if (!raw) return null
+    localStorage.removeItem(PENDING_EVENT_KEY)
+    const parsed = JSON.parse(raw) as { id?: string; at?: number }
+    if (!parsed?.id) return null
+    if (!parsed.at || Date.now() - parsed.at > PENDING_TTL_MS) return null
+    return parsed.id
+  } catch {
+    return null
+  }
+}
+
 export default function Showevents() {
   const [Data, SetData] = useState<any[]>([])
   const [Onedata, Setonedata] = useState<any>()
   const [Title, setTitle] = useState<string>('')
   const [Desc, setDesc] = useState<string>('')
   const [Address, setAddress] = useState<string>('')
-  const [Date, setDate] = useState<string>('')
+  const [EventDate, setEventDate] = useState<string>('')
   const [Strength, setStrength] = useState<string>('')
   const [loading, setLoading] = useState(true)
   const [Popup, SetPopup] = useState(false)
+  const [Booking, SetBooking] = useState<BookableEvent | null>(null)
+
+  const { session, hydrated } = useAuth()
+  const router = useRouter()
 
   const FetchData = async () => {
     try {
-      const response = await axios.get('https://golang-rest.onrender.com/events')
-      SetData(response.data.Events)
-      setLoading(false)
+      const response = await api.get('/events')
+      SetData(response.data.Events || [])
     } catch (err) {
       console.log(err)
+      toast.error('Could not load events. Please try again.')
+    } finally {
       setLoading(false)
     }
   }
@@ -41,24 +68,61 @@ export default function Showevents() {
   const GetPoppup = async (ID: number) => {
     SetPopup(true)
     try {
-      const response = await axios.get(
-        `https://golang-rest.onrender.com/event/${ID}`
-      )
+      const response = await api.get(`/event/${ID}`)
       Setonedata(response.data.Event)
       setTitle(response.data.Event.Title)
       setDesc(response.data.Event.Desc)
       setAddress(response.data.Event.Address)
-      setDate(response.data.Event.Date)
+      setEventDate(response.data.Event.Date)
       setStrength(response.data.Event.Strength)
-      localStorage.setItem('ID', String(ID))
     } catch (err) {
       console.log(err)
     }
   }
 
+  const handleBook = useCallback(
+    (item: any) => {
+      if (!hydrated) return
+      if (!session) {
+        localStorage.setItem(
+          PENDING_EVENT_KEY,
+          JSON.stringify({ id: String(item.ID), at: Date.now() })
+        )
+        router.push(`/loginuser?next=${encodeURIComponent('/showevents')}`)
+        return
+      }
+      if (session.role !== 'user') {
+        toast(
+          'You are signed in as an organization. Sign out and use an attendee account to book events.',
+          { icon: 'ℹ️' }
+        )
+        return
+      }
+      SetBooking(item)
+    },
+    [hydrated, session, router]
+  )
+
   useEffect(() => {
     FetchData()
   }, [])
+
+  // Resume a booking the user started before signing in
+  useEffect(() => {
+    if (!hydrated || !session) return
+    const pending = readPendingEvent()
+    if (!pending) return
+    if (session.role !== 'user') return
+    const found = Data.find((i: any) => String(i.ID) === pending)
+    if (found) {
+      SetBooking(found)
+      return
+    }
+    api
+      .get(`/event/${pending}`)
+      .then((res) => res.data.Event && SetBooking(res.data.Event))
+      .catch(() => {})
+  }, [hydrated, session, Data])
 
   if (loading) {
     return (
@@ -71,14 +135,22 @@ export default function Showevents() {
   return (
     <>
       <div className="min-h-screen bg-zinc-50">
+        <Navbar />
         <PageHeader
           title="Events"
           description="Discover community events and book your spot."
           action={
-            <Link href="/" className={buttonStyles('secondary', 'sm')}>
-              <AiOutlineHome className="text-base" />
-              Home
-            </Link>
+            <div className="flex flex-wrap gap-2">
+              {session?.role === 'user' && (
+                <Link href="/userevent" className={buttonStyles('secondary', 'sm')}>
+                  My bookings
+                </Link>
+              )}
+              <Link href="/" className={buttonStyles('secondary', 'sm')}>
+                <AiOutlineHome className="text-base" />
+                Home
+              </Link>
+            </div>
           }
         />
 
@@ -122,15 +194,13 @@ export default function Showevents() {
                     >
                       Details
                     </Button>
-                    <Link
-                      href="/loginuser"
-                      className={`${buttonStyles('primary', 'sm')} flex-1`}
-                      onClick={() => {
-                        localStorage.setItem('ID', String(items.ID))
-                      }}
+                    <Button
+                      size="sm"
+                      className="flex-1"
+                      onClick={() => handleBook(items)}
                     >
                       Book
-                    </Link>
+                    </Button>
                   </div>
                 </Card>
               ))}
@@ -169,7 +239,7 @@ export default function Showevents() {
                   </div>
                   <div className="flex justify-between gap-6 py-3">
                     <dt className="font-medium text-zinc-500">When</dt>
-                    <dd className="text-right text-zinc-900">{Date}</dd>
+                    <dd className="text-right text-zinc-900">{EventDate}</dd>
                   </div>
                   <div className="flex justify-between gap-6 py-3">
                     <dt className="font-medium text-zinc-500">Attendees</dt>
@@ -180,18 +250,25 @@ export default function Showevents() {
                     <dd className="mt-1 leading-6 text-zinc-900">{Desc}</dd>
                   </div>
                 </dl>
-                <Link
-                  href="/loginuser"
-                  className={`${buttonStyles('primary', 'md')} mt-8 w-full`}
+                <Button
+                  className="mt-8 w-full"
+                  onClick={() => {
+                    SetPopup(false)
+                    handleBook(Onedata)
+                  }}
                 >
                   Book this event
-                </Link>
+                </Button>
               </>
             ) : (
               <Spinner />
             )}
           </div>
         </div>
+      )}
+
+      {Booking && (
+        <BookingModal event={Booking} onClose={() => SetBooking(null)} />
       )}
     </>
   )

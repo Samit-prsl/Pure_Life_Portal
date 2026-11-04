@@ -44,8 +44,13 @@ func OrgSignup(c *gin.Context) {
 		return
 	}
 	c.JSON(200, gin.H{
-		"Message":      "Organization signed up successfully",
-		"Organization": NewOrg,
+		"Message": "Organization signed up successfully",
+		"Organization": gin.H{
+			"ID":      NewOrg.ID,
+			"Name":    NewOrg.Name,
+			"Address": NewOrg.Address,
+			"Email":   NewOrg.Email,
+		},
 	})
 }
 
@@ -71,8 +76,9 @@ func OrgSignin(c *gin.Context) {
 		return
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": Organization.ID,
-		"exp": time.Now().Add(time.Hour * 24).Unix(),
+		"sub":  Organization.ID,
+		"role": "org",
+		"exp":  time.Now().Add(time.Hour * 24 * 30).Unix(),
 	})
 
 	gettoken, err := token.SignedString([]byte(os.Getenv("SECRET_KEY")))
@@ -84,6 +90,9 @@ func OrgSignin(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{
 		"token": gettoken,
+		"role":  "org",
+		"name":  Organization.Name,
+		"email": Organization.Email,
 	})
 }
 

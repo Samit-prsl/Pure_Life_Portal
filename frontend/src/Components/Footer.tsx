@@ -13,17 +13,19 @@ const columns = [
     ],
   },
   {
-    title: 'For Organizations',
+    title: 'For organizers',
     links: [
-      { label: 'Register', href: '/registerorg' },
-      { label: 'Login', href: '/loginorg' },
+      { label: 'Register organization', href: '/registerorg' },
+      { label: 'Organizer sign in', href: '/loginorg' },
+      { label: 'Dashboard', href: '/navigation' },
     ],
   },
   {
-    title: 'For Users',
+    title: 'For attendees',
     links: [
-      { label: 'Register', href: '/registeruser' },
-      { label: 'Login', href: '/loginuser' },
+      { label: 'Create account', href: '/registeruser' },
+      { label: 'Attendee sign in', href: '/loginuser' },
+      { label: 'My bookings', href: '/userevent' },
     ],
   },
 ]

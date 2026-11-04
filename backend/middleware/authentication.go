@@ -44,6 +44,12 @@ func GetAuthenticated(c *gin.Context) {
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
+		if claims["role"] != "org" {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+				"message": "This endpoint requires an organization account",
+			})
+			return
+		}
 		var Organization models.Organization
 		initializers.DB.Find(&Organization, claims["sub"])
 		if Organization.ID == 0 {

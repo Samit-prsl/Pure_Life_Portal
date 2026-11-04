@@ -1,27 +1,42 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import axios from 'axios'
+import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
 import AuthLayout from '@/Components/AuthLayout'
 import { Button, Field, Input } from '@/Components/ui'
+import { api, apiErrorMessage, safeNext } from '@/lib/api'
+import { useAuth } from '@/lib/auth'
 
 export default function Registeruser() {
   const [Email, SetEmail] = useState('')
   const [Password, SetPassword] = useState('')
   const [Loading, SetLoading] = useState(false)
 
-  const handlesubmit = async (e: any) => {
+  const { login, session } = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (session) {
+      router.replace(session.role === 'org' ? '/navigation' : '/showevents')
+    }
+  }, [session, router])
+
+  const handlesubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     SetLoading(true)
     try {
-      await axios.post('https://golang-rest.onrender.com/register', {
-        Email,
-        Password,
+      await api.post('/register', { Email, Password })
+      const res = await api.post('/login', { Email, Password })
+      login({
+        token: res.data.token,
+        role: 'user',
+        name: res.data.email || Email,
+        email: res.data.email || Email,
       })
-      toast.success('Successfully Registered!')
+      toast.success('Account created — you are signed in!')
+      router.push(safeNext(router.query.next, '/showevents'))
     } catch (err) {
-      console.log(err)
-      toast.error("This didn't work, Try with another email")
+      toast.error(apiErrorMessage(err, 'Registration failed. Try another email.'))
     }
     SetLoading(false)
   }
@@ -29,15 +44,19 @@ export default function Registeruser() {
   return (
     <AuthLayout
       title="Create your account"
-      subtitle="Good to see you here. Register now to Pure Life Portal."
+      subtitle="Join Pure Life Portal to discover and book community events."
       footer={
         <>
           Already registered?{' '}
           <Link
-            href="/loginuser"
+            href={`/loginuser${
+              router.query.next
+                ? `?next=${encodeURIComponent(String(router.query.next))}`
+                : ''
+            }`}
             className="font-medium text-emerald-600 hover:text-emerald-700"
           >
-            Login now
+            Sign in
           </Link>
         </>
       }
@@ -50,9 +69,8 @@ export default function Registeruser() {
             name="email"
             autoComplete="email"
             placeholder="you@example.com"
-            onChange={(e) => {
-              SetEmail(e.target.value)
-            }}
+            value={Email}
+            onChange={(e) => SetEmail(e.target.value)}
           />
         </Field>
 
@@ -63,15 +81,24 @@ export default function Registeruser() {
             name="password"
             autoComplete="new-password"
             placeholder="Create a password"
-            onChange={(e) => {
-              SetPassword(e.target.value)
-            }}
+            value={Password}
+            onChange={(e) => SetPassword(e.target.value)}
           />
         </Field>
 
         <Button type="submit" loading={Loading} className="w-full">
-          Register
+          Create account
         </Button>
+
+        <p className="text-center text-sm text-zinc-500">
+          Registering an organization?{' '}
+          <Link
+            href="/registerorg"
+            className="font-medium text-emerald-600 hover:text-emerald-700"
+          >
+            Go here
+          </Link>
+        </p>
       </form>
     </AuthLayout>
   )

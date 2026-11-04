@@ -67,8 +67,9 @@ func Signin(c *gin.Context) {
 		return
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": user.ID,
-		"exp": time.Now().Add(time.Hour * 24).Unix(),
+		"sub":  user.ID,
+		"role": "user",
+		"exp":  time.Now().Add(time.Hour * 24 * 30).Unix(),
 	})
 
 	gettoken, err := token.SignedString([]byte(os.Getenv("SECRET_KEY")))
@@ -81,6 +82,8 @@ func Signin(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{
 		"token": gettoken,
+		"role":  "user",
+		"email": user.Email,
 	})
 }
 

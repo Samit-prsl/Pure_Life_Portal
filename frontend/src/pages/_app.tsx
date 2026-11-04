@@ -2,6 +2,7 @@ import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { Inter } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
+import { AuthProvider } from '@/lib/auth'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -12,7 +13,9 @@ const inter = Inter({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <main className={`${inter.variable} font-sans`}>
-      <Component {...pageProps} />
+      <AuthProvider>
+        <Component {...pageProps} />
+      </AuthProvider>
       <Toaster
         position="bottom-right"
         reverseOrder={false}

@@ -44,6 +44,12 @@ func GetAuthenticatedUsers(c *gin.Context) {
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
+		if claims["role"] != "user" {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+				"message": "This endpoint requires an attendee account",
+			})
+			return
+		}
 		var user models.User
 		initializers.DB.Find(&user, claims["sub"])
 		if user.ID == 0 {

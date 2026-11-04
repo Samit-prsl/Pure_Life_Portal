@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import axios from 'axios'
+import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
 import AuthLayout from '@/Components/AuthLayout'
 import { Button, Field, Input } from '@/Components/ui'
+import { api, apiErrorMessage, safeNext } from '@/lib/api'
+import { useAuth } from '@/lib/auth'
 
 export default function Registerorg() {
   const [Email, SetEmail] = useState('')
@@ -12,37 +14,51 @@ export default function Registerorg() {
   const [Address, SetAddress] = useState('')
   const [Loading, SetLoading] = useState(false)
 
-  const handlesubmit = async (e: any) => {
+  const { login, session } = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (session) {
+      router.replace(session.role === 'org' ? '/navigation' : '/showevents')
+    }
+  }, [session, router])
+
+  const handlesubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     SetLoading(true)
     try {
-      await axios.post('https://golang-rest.onrender.com/orgRegister', {
-        Email,
-        Password,
-        Name,
-        Address,
+      await api.post('/orgRegister', { Email, Password, Name, Address })
+      const res = await api.post('/orgLogin', { Email, Password })
+      login({
+        token: res.data.token,
+        role: 'org',
+        name: res.data.name || Name,
+        email: res.data.email || Email,
       })
-      SetLoading(false)
-      toast.success('Successfully Registered!')
+      toast.success('Organization registered — you are signed in!')
+      router.push(safeNext(router.query.next, '/navigation'))
     } catch (err) {
-      console.log(err)
-      SetLoading(false)
-      toast.error("This didn't work, Try with another email")
+      toast.error(apiErrorMessage(err, 'Registration failed. Try another email.'))
     }
+    SetLoading(false)
   }
 
   return (
     <AuthLayout
       title="Register your organization"
-      subtitle="You are a special one. Please register your organization first."
+      subtitle="Create an organizer account to post events and manage attendees."
       footer={
         <>
           Already registered?{' '}
           <Link
-            href="/loginorg"
+            href={`/loginorg${
+              router.query.next
+                ? `?next=${encodeURIComponent(String(router.query.next))}`
+                : ''
+            }`}
             className="font-medium text-emerald-600 hover:text-emerald-700"
           >
-            Login now
+            Sign in
           </Link>
         </>
       }
@@ -55,9 +71,8 @@ export default function Registerorg() {
             name="email"
             autoComplete="email"
             placeholder="organization@example.com"
-            onChange={(e) => {
-              SetEmail(e.target.value)
-            }}
+            value={Email}
+            onChange={(e) => SetEmail(e.target.value)}
           />
         </Field>
 
@@ -67,9 +82,8 @@ export default function Registerorg() {
             type="text"
             name="Name"
             placeholder="Organization name"
-            onChange={(e) => {
-              SetName(e.target.value)
-            }}
+            value={Name}
+            onChange={(e) => SetName(e.target.value)}
           />
         </Field>
 
@@ -79,9 +93,8 @@ export default function Registerorg() {
             type="text"
             name="Address"
             placeholder="Organization address"
-            onChange={(e) => {
-              SetAddress(e.target.value)
-            }}
+            value={Address}
+            onChange={(e) => SetAddress(e.target.value)}
           />
         </Field>
 
@@ -92,15 +105,24 @@ export default function Registerorg() {
             name="password"
             autoComplete="new-password"
             placeholder="Create a password"
-            onChange={(e) => {
-              SetPassword(e.target.value)
-            }}
+            value={Password}
+            onChange={(e) => SetPassword(e.target.value)}
           />
         </Field>
 
         <Button type="submit" loading={Loading} className="w-full">
-          Register
+          Create account
         </Button>
+
+        <p className="text-center text-sm text-zinc-500">
+          Attending instead of organizing?{' '}
+          <Link
+            href="/registeruser"
+            className="font-medium text-emerald-600 hover:text-emerald-700"
+          >
+            Create an attendee account
+          </Link>
+        </p>
       </form>
     </AuthLayout>
   )

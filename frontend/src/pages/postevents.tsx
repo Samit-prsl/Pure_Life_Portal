@@ -1,10 +1,13 @@
-import axios from 'axios'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import Navbar from '@/Components/Navbar'
+import OrgNav from '@/Components/OrgNav'
+import RoleGate from '@/Components/RoleGate'
+import { api, apiErrorMessage } from '@/lib/api'
 import {
   Button,
-  buttonStyles,
   Card,
   Container,
   Field,
@@ -13,7 +16,7 @@ import {
   Textarea,
 } from '@/Components/ui'
 
-export default function Postevents() {
+function Postevents() {
   const [Title, SetTitle] = useState('')
   const [Desc, SetDesc] = useState('')
   const [Address, SetAddress] = useState('')
@@ -21,50 +24,30 @@ export default function Postevents() {
   const [Strength2, SetStrength2] = useState(0)
   const [Loading, SetLoading] = useState(false)
 
-  const handlesubmit = async (e: any) => {
+  const router = useRouter()
+
+  const handlesubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     SetLoading(true)
     try {
-      const token = localStorage.getItem('token')
       const Strength = Strength2 + 1
-      const data = {
-        Title,
-        Desc,
-        Address,
-        Date,
-        Strength,
-      }
-      const response = await axios.post(
-        'https://golang-rest.onrender.com/postevent',
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      console.log(response.data)
-      toast.success('Successfully posted an event!')
-      SetLoading(false)
-      window.location.replace('/getorgdata')
+      await api.post('/postevent', { Title, Desc, Address, Date, Strength })
+      toast.success('Event published!')
+      router.push('/getorgdata')
     } catch (err) {
-      console.log(err)
-      toast.error('Cannot post the event!')
-      SetLoading(false)
+      toast.error(apiErrorMessage(err, 'Cannot post the event!'))
     }
+    SetLoading(false)
   }
 
   return (
     <div className="min-h-screen bg-zinc-50">
+      <Navbar />
       <PageHeader
         title="Post an event"
         description="Add an event and serve the society."
-        action={
-          <Link href="/navigation" className={buttonStyles('secondary', 'sm')}>
-            Back to dashboard
-          </Link>
-        }
       />
+      <OrgNav />
 
       <Container className="py-10">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
@@ -76,9 +59,8 @@ export default function Postevents() {
                   type="text"
                   name="Title"
                   placeholder="Community health drive"
-                  onChange={(e) => {
-                    SetTitle(e.target.value)
-                  }}
+                  value={Title}
+                  onChange={(e) => SetTitle(e.target.value)}
                 />
               </Field>
 
@@ -88,9 +70,8 @@ export default function Postevents() {
                   name="Desc"
                   rows={4}
                   placeholder="What is this event about?"
-                  onChange={(e) => {
-                    SetDesc(e.target.value)
-                  }}
+                  value={Desc}
+                  onChange={(e) => SetDesc(e.target.value)}
                 />
               </Field>
 
@@ -100,9 +81,8 @@ export default function Postevents() {
                   type="text"
                   name="Address"
                   placeholder="Where will it take place?"
-                  onChange={(e) => {
-                    SetAddress(e.target.value)
-                  }}
+                  value={Address}
+                  onChange={(e) => SetAddress(e.target.value)}
                 />
               </Field>
 
@@ -118,9 +98,8 @@ export default function Postevents() {
                     type="text"
                     name="Date"
                     placeholder="DD-MM-YYYY"
-                    onChange={(e) => {
-                      SetDate(e.target.value)
-                    }}
+                    value={Date}
+                    onChange={(e) => SetDate(e.target.value)}
                   />
                 </Field>
 
@@ -137,16 +116,26 @@ export default function Postevents() {
                     placeholder="50"
                     onChange={(e) => {
                       const strength = parseInt(e.target.value)
-                      SetStrength2(strength)
+                      SetStrength2(Number.isNaN(strength) ? 0 : strength)
                     }}
                   />
                 </Field>
               </div>
 
-              <div className="pt-2">
-                <Button type="submit" loading={Loading} className="w-full sm:w-auto">
+              <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center">
+                <Button
+                  type="submit"
+                  loading={Loading}
+                  className="w-full sm:w-auto"
+                >
                   Post event
                 </Button>
+                <Link
+                  href="/getorgdata"
+                  className="text-sm font-medium text-zinc-500 hover:text-zinc-900 sm:ml-2"
+                >
+                  Cancel
+                </Link>
               </div>
             </form>
           </Card>
@@ -163,5 +152,13 @@ export default function Postevents() {
         </div>
       </Container>
     </div>
+  )
+}
+
+export default function PosteventsPage() {
+  return (
+    <RoleGate role="org">
+      <Postevents />
+    </RoleGate>
   )
 }

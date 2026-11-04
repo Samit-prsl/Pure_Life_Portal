@@ -1,34 +1,35 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { AiOutlineHome } from 'react-icons/ai'
+import toast from 'react-hot-toast'
+import Navbar from '@/Components/Navbar'
 import Footer from '@/Components/Footer'
+import OrgNav from '@/Components/OrgNav'
+import RoleGate from '@/Components/RoleGate'
+import { api, apiErrorMessage } from '@/lib/api'
 import {
   buttonStyles,
   Card,
   Container,
   EmptyState,
   PageHeader,
+  Spinner,
 } from '@/Components/ui'
 
-export default function Attenders() {
-  const [Data, SetData] = useState<any[]>([])
+function Attenders() {
+  const [Data, SetData] = useState<any[] | null>(null)
 
   const GetData = async () => {
     try {
       const ID: number = Number(localStorage.getItem('Eventid'))
-      const token = localStorage.getItem('token')
-      const response = await axios.get(
-        `https://golang-rest.onrender.com/attendingusers/${ID}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      SetData(response.data.Message)
+      if (!ID) {
+        SetData([])
+        return
+      }
+      const response = await api.get(`/attendingusers/${ID}`)
+      SetData(response.data.Message || [])
     } catch (err) {
-      console.log(err)
+      toast.error(apiErrorMessage(err, 'Could not load attenders.'))
+      SetData([])
     }
   }
 
@@ -38,35 +39,53 @@ export default function Attenders() {
 
   return (
     <div className="min-h-screen bg-zinc-50">
+      <Navbar />
       <PageHeader
         title="Attenders"
-        description="Users attending this event."
+        description="People who have booked this event."
         action={
-          <Link href="/" className={buttonStyles('secondary', 'sm')}>
-            <AiOutlineHome className="text-base" />
-            Home
+          <Link href="/getorgdata" className={buttonStyles('secondary', 'sm')}>
+            Back to events
           </Link>
         }
       />
+      <OrgNav />
 
       <Container className="py-10">
-        {Data.length === 0 ? (
+        {Data === null ? (
+          <Spinner />
+        ) : Data.length === 0 ? (
           <EmptyState
             title="No bookings yet"
-            description="No one has booked this event yet."
+            description="No one has booked this event yet. Share it to get the word out!"
+            action={
+              <Link href="/getorgdata" className={buttonStyles('secondary', 'md')}>
+                Back to my events
+              </Link>
+            }
           />
         ) : (
           <Card className="divide-y divide-zinc-100">
+            <div className="flex items-center justify-between bg-zinc-50 px-6 py-3">
+              <span className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                Attendee email
+              </span>
+              <span className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                {Data.length} booked
+              </span>
+            </div>
             {Data.map((items: any, index: number) => (
               <div
                 key={index}
-                className="flex flex-col gap-1 px-6 py-4 sm:flex-row sm:items-center sm:justify-between"
+                className="flex items-center justify-between px-6 py-4"
               >
-                <span className="text-sm font-medium text-zinc-500">
-                  Email of user
-                </span>
-                <span className="text-sm text-zinc-900">
-                  {items.user_data.Email}
+                <span className="inline-flex items-center gap-3 text-sm text-zinc-900">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 text-xs font-semibold text-emerald-700">
+                    {(items.user_data?.Email || '?')
+                      .charAt(0)
+                      .toUpperCase()}
+                  </span>
+                  {items.user_data?.Email}
                 </span>
               </div>
             ))}
@@ -76,5 +95,13 @@ export default function Attenders() {
 
       <Footer />
     </div>
+  )
+}
+
+export default function AttendersPage() {
+  return (
+    <RoleGate role="org">
+      <Attenders />
+    </RoleGate>
   )
 }
