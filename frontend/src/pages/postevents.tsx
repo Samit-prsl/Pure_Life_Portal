@@ -194,7 +194,7 @@ function Postevents() {
 
           <Card className="h-fit border-0 bg-emerald-600 p-6 text-white ring-emerald-600 sm:p-8">
             <h2 className="text-lg font-semibold">Before you publish</h2>
-            <ul className="mt-4 space-y-3 text-sm leading-6 text-emerald-50">
+            <ul className="mt-4 space-y-3 text-sm leading-6 text-emerald-500">
               <li>Use a clear, descriptive title.</li>
               <li>Include the exact address or venue.</li>
               <li>Confirm the date and capacity beforehand.</li>
