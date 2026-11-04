@@ -7,6 +7,12 @@ import OrgNav from '@/Components/OrgNav'
 import RoleGate from '@/Components/RoleGate'
 import { api, apiErrorMessage } from '@/lib/api'
 import {
+  clearEventError,
+  EventFormErrors,
+  hasEventErrors,
+  validateEventForm,
+} from '@/lib/eventValidation'
+import {
   Button,
   Card,
   Container,
@@ -22,7 +28,8 @@ function Updatevent() {
   const [Desc, SetDesc] = useState('')
   const [Address, SetAddress] = useState('')
   const [Date, SetDate] = useState('')
-  const [Strength2, SetStrength2] = useState(0)
+  const [Strength2, SetStrength2] = useState('')
+  const [Errors, SetErrors] = useState<EventFormErrors>({})
   const [Loading, SetLoading] = useState(false)
   const [Ready, SetReady] = useState(false)
   const [NotFound, SetNotFound] = useState(false)
@@ -47,7 +54,9 @@ function Updatevent() {
         SetDesc(event.Desc || '')
         SetAddress(event.Address || '')
         SetDate(event.Date || '')
-        SetStrength2(Math.max(0, (Number(event.Strength) || 1) - 1))
+        SetStrength2(
+          String(Math.max(0, (Number(event.Strength) || 1) - 1))
+        )
         SetReady(true)
       })
       .catch(() => SetNotFound(true))
@@ -55,10 +64,20 @@ function Updatevent() {
 
   const handlesubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    const validation = validateEventForm({
+      Title,
+      Desc,
+      Address,
+      Date,
+      Strength: Strength2,
+    })
+    SetErrors(validation)
+    if (hasEventErrors(validation)) return
+
     SetLoading(true)
     try {
       const ID: number = Number(localStorage.getItem('Eventid'))
-      const Strength = Strength2 + 1
+      const Strength = Number(Strength2) + 1
       await api.put(`/updatevent/${ID}`, {
         Title,
         Desc,
@@ -131,37 +150,64 @@ function Updatevent() {
         ) : (
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
             <Card className="p-6 sm:p-8">
-              <form onSubmit={handlesubmit} className="space-y-5">
-                <Field label="Title" htmlFor="updatetitle" required>
+              <form onSubmit={handlesubmit} noValidate className="space-y-5">
+                <Field
+                  label="Title"
+                  htmlFor="updatetitle"
+                  required
+                  error={Errors.Title}
+                >
                   <Input
                     id="updatetitle"
                     type="text"
                     name="Title"
                     placeholder="Community health drive"
+                    maxLength={100}
                     value={Title}
-                    onChange={(e) => SetTitle(e.target.value)}
+                    onChange={(e) => {
+                      SetTitle(e.target.value)
+                      SetErrors((prev) => clearEventError(prev, 'Title'))
+                    }}
                   />
                 </Field>
 
-                <Field label="Description" htmlFor="updatedesc" required>
+                <Field
+                  label="Description"
+                  htmlFor="updatedesc"
+                  required
+                  error={Errors.Desc}
+                >
                   <Textarea
                     id="updatedesc"
                     name="Desc"
                     rows={4}
+                    maxLength={1000}
                     placeholder="What is this event about?"
                     value={Desc}
-                    onChange={(e) => SetDesc(e.target.value)}
+                    onChange={(e) => {
+                      SetDesc(e.target.value)
+                      SetErrors((prev) => clearEventError(prev, 'Desc'))
+                    }}
                   />
                 </Field>
 
-                <Field label="Address" htmlFor="updateaddress" required>
+                <Field
+                  label="Address"
+                  htmlFor="updateaddress"
+                  required
+                  error={Errors.Address}
+                >
                   <Input
                     id="updateaddress"
                     type="text"
                     name="Address"
+                    maxLength={200}
                     placeholder="Where will it take place?"
                     value={Address}
-                    onChange={(e) => SetAddress(e.target.value)}
+                    onChange={(e) => {
+                      SetAddress(e.target.value)
+                      SetErrors((prev) => clearEventError(prev, 'Address'))
+                    }}
                   />
                 </Field>
 
@@ -171,14 +217,19 @@ function Updatevent() {
                     htmlFor="updatedate"
                     required
                     hint="Use DD-MM-YYYY format."
+                    error={Errors.Date}
                   >
                     <Input
                       id="updatedate"
                       type="text"
                       name="Date"
                       placeholder="DD-MM-YYYY"
+                      maxLength={10}
                       value={Date}
-                      onChange={(e) => SetDate(e.target.value)}
+                      onChange={(e) => {
+                        SetDate(e.target.value)
+                        SetErrors((prev) => clearEventError(prev, 'Date'))
+                      }}
                     />
                   </Field>
 
@@ -186,17 +237,19 @@ function Updatevent() {
                     label="Number of people to attend"
                     htmlFor="updatestrength"
                     required
+                    error={Errors.Strength}
                   >
                     <Input
                       id="updatestrength"
                       type="number"
                       min={0}
+                      max={99999}
                       name="Strength"
                       placeholder="50"
                       value={Strength2}
                       onChange={(e) => {
-                        const strength = parseInt(e.target.value)
-                        SetStrength2(Number.isNaN(strength) ? 0 : strength)
+                        SetStrength2(e.target.value)
+                        SetErrors((prev) => clearEventError(prev, 'Strength'))
                       }}
                     />
                   </Field>

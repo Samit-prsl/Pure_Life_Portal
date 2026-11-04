@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
 import AuthLayout from '@/Components/AuthLayout'
+import RoleMismatchModal from '@/Components/RoleMismatchModal'
 import { Button, Field, Input } from '@/Components/ui'
 import { api, apiErrorMessage, safeNext } from '@/lib/api'
 import { useAuth } from '@/lib/auth'
@@ -14,14 +15,17 @@ export default function Registerorg() {
   const [Address, SetAddress] = useState('')
   const [Loading, SetLoading] = useState(false)
 
-  const { login, session } = useAuth()
+  const { login, session, hydrated } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
-    if (session) {
-      router.replace(session.role === 'org' ? '/navigation' : '/showevents')
+    if (!hydrated || !session) return
+    if (session.role === 'org') {
+      router.replace('/navigation')
     }
-  }, [session, router])
+  }, [hydrated, session, router])
+
+  const mismatchOpen = Boolean(hydrated && session && session.role === 'user')
 
   const handlesubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -44,86 +48,94 @@ export default function Registerorg() {
   }
 
   return (
-    <AuthLayout
-      title="Register your organization"
-      subtitle="Create an organizer account to post events and manage attendees."
-      footer={
-        <>
-          Already registered?{' '}
-          <Link
-            href={`/loginorg${
-              router.query.next
-                ? `?next=${encodeURIComponent(String(router.query.next))}`
-                : ''
-            }`}
-            className="font-medium text-emerald-600 hover:text-emerald-700"
-          >
-            Sign in
-          </Link>
-        </>
-      }
-    >
-      <form onSubmit={handlesubmit} className="space-y-5">
-        <Field label="Email" htmlFor="OrgEmail" required>
-          <Input
-            id="OrgEmail"
-            type="email"
-            name="email"
-            autoComplete="email"
-            placeholder="organization@example.com"
-            value={Email}
-            onChange={(e) => SetEmail(e.target.value)}
-          />
-        </Field>
+    <>
+      <AuthLayout
+        title="Register your organization"
+        subtitle="Create an organizer account to post events and manage attendees."
+        footer={
+          <>
+            Already registered?{' '}
+            <Link
+              href={`/loginorg${
+                router.query.next
+                  ? `?next=${encodeURIComponent(String(router.query.next))}`
+                  : ''
+              }`}
+              className="font-medium text-emerald-600 hover:text-emerald-700"
+            >
+              Sign in
+            </Link>
+          </>
+        }
+      >
+        <form onSubmit={handlesubmit} className="space-y-5">
+          <Field label="Email" htmlFor="OrgEmail" required>
+            <Input
+              id="OrgEmail"
+              type="email"
+              name="email"
+              autoComplete="email"
+              placeholder="organization@example.com"
+              value={Email}
+              onChange={(e) => SetEmail(e.target.value)}
+            />
+          </Field>
 
-        <Field label="Name" htmlFor="OrgName" required>
-          <Input
-            id="OrgName"
-            type="text"
-            name="Name"
-            placeholder="Organization name"
-            value={Name}
-            onChange={(e) => SetName(e.target.value)}
-          />
-        </Field>
+          <Field label="Name" htmlFor="OrgName" required>
+            <Input
+              id="OrgName"
+              type="text"
+              name="Name"
+              placeholder="Organization name"
+              value={Name}
+              onChange={(e) => SetName(e.target.value)}
+            />
+          </Field>
 
-        <Field label="Address" htmlFor="OrgAddress" required>
-          <Input
-            id="OrgAddress"
-            type="text"
-            name="Address"
-            placeholder="Organization address"
-            value={Address}
-            onChange={(e) => SetAddress(e.target.value)}
-          />
-        </Field>
+          <Field label="Address" htmlFor="OrgAddress" required>
+            <Input
+              id="OrgAddress"
+              type="text"
+              name="Address"
+              placeholder="Organization address"
+              value={Address}
+              onChange={(e) => SetAddress(e.target.value)}
+            />
+          </Field>
 
-        <Field label="Password" htmlFor="OrgPassword" required>
-          <Input
-            id="OrgPassword"
-            type="password"
-            name="password"
-            autoComplete="new-password"
-            placeholder="Create a password"
-            value={Password}
-            onChange={(e) => SetPassword(e.target.value)}
-          />
-        </Field>
+          <Field label="Password" htmlFor="OrgPassword" required>
+            <Input
+              id="OrgPassword"
+              type="password"
+              name="password"
+              autoComplete="new-password"
+              placeholder="Create a password"
+              value={Password}
+              onChange={(e) => SetPassword(e.target.value)}
+            />
+          </Field>
 
-        <Button type="submit" loading={Loading} className="w-full">
-          Create account
-        </Button>
+          <Button type="submit" loading={Loading} className="w-full">
+            Create account
+          </Button>
 
-        <p className="text-center text-sm text-zinc-500">
-          Attending instead of organizing?{' '}
-          <Link
-            href="/registeruser"
-            className="font-medium text-emerald-600 hover:text-emerald-700"
-          >
-            Create an attendee account
-          </Link>
-        </p>
-      </form>
-    </AuthLayout>
+          <p className="text-center text-sm text-zinc-500">
+            Attending instead of organizing?{' '}
+            <Link
+              href="/registeruser"
+              className="font-medium text-emerald-600 hover:text-emerald-700"
+            >
+              Create an attendee account
+            </Link>
+          </p>
+        </form>
+      </AuthLayout>
+
+      <RoleMismatchModal
+        open={mismatchOpen}
+        intendedRole="org"
+        onCancel={() => router.push('/showevents')}
+      />
+    </>
   )
 }

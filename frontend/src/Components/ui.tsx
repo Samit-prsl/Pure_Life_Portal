@@ -97,21 +97,40 @@ export function Field({
   required = false,
   htmlFor,
   hint,
+  error,
   children,
 }: {
   label: string
   required?: boolean
   htmlFor?: string
   hint?: string
+  error?: string
   children: React.ReactNode
 }) {
+  let control = children
+  if (error && React.isValidElement(children)) {
+    const child = children as React.ReactElement<{
+      className?: string
+      'aria-invalid'?: boolean
+    }>
+    control = React.cloneElement(child, {
+      'aria-invalid': true,
+      className: `${child.props.className ?? ''} !ring-red-500`.trim(),
+    })
+  }
+
   return (
     <div>
       <Label htmlFor={htmlFor} required={required}>
         {label}
       </Label>
-      {children}
+      {control}
       {hint && <p className="mt-1.5 text-xs text-zinc-500">{hint}</p>}
+      {error && (
+        <p role="alert" className="mt-1.5 text-xs font-medium text-red-600">
+          {error}
+        </p>
+      )}
     </div>
   )
 }

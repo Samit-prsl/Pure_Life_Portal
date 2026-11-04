@@ -7,6 +7,12 @@ import OrgNav from '@/Components/OrgNav'
 import RoleGate from '@/Components/RoleGate'
 import { api, apiErrorMessage } from '@/lib/api'
 import {
+  clearEventError,
+  EventFormErrors,
+  hasEventErrors,
+  validateEventForm,
+} from '@/lib/eventValidation'
+import {
   Button,
   Card,
   Container,
@@ -21,16 +27,27 @@ function Postevents() {
   const [Desc, SetDesc] = useState('')
   const [Address, SetAddress] = useState('')
   const [Date, SetDate] = useState('')
-  const [Strength2, SetStrength2] = useState(0)
+  const [Strength2, SetStrength2] = useState('')
+  const [Errors, SetErrors] = useState<EventFormErrors>({})
   const [Loading, SetLoading] = useState(false)
 
   const router = useRouter()
 
   const handlesubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    const validation = validateEventForm({
+      Title,
+      Desc,
+      Address,
+      Date,
+      Strength: Strength2,
+    })
+    SetErrors(validation)
+    if (hasEventErrors(validation)) return
+
     SetLoading(true)
     try {
-      const Strength = Strength2 + 1
+      const Strength = Number(Strength2) + 1
       await api.post('/postevent', { Title, Desc, Address, Date, Strength })
       toast.success('Event published!')
       router.push('/getorgdata')
@@ -52,37 +69,64 @@ function Postevents() {
       <Container className="py-10">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
           <Card className="p-6 sm:p-8">
-            <form onSubmit={handlesubmit} className="space-y-5">
-              <Field label="Title" htmlFor="orgtitle" required>
+            <form onSubmit={handlesubmit} noValidate className="space-y-5">
+              <Field
+                label="Title"
+                htmlFor="orgtitle"
+                required
+                error={Errors.Title}
+              >
                 <Input
                   id="orgtitle"
                   type="text"
                   name="Title"
                   placeholder="Community health drive"
+                  maxLength={100}
                   value={Title}
-                  onChange={(e) => SetTitle(e.target.value)}
+                  onChange={(e) => {
+                    SetTitle(e.target.value)
+                    SetErrors((prev) => clearEventError(prev, 'Title'))
+                  }}
                 />
               </Field>
 
-              <Field label="Description" htmlFor="orgDesc" required>
+              <Field
+                label="Description"
+                htmlFor="orgDesc"
+                required
+                error={Errors.Desc}
+              >
                 <Textarea
                   id="orgDesc"
                   name="Desc"
                   rows={4}
+                  maxLength={1000}
                   placeholder="What is this event about?"
                   value={Desc}
-                  onChange={(e) => SetDesc(e.target.value)}
+                  onChange={(e) => {
+                    SetDesc(e.target.value)
+                    SetErrors((prev) => clearEventError(prev, 'Desc'))
+                  }}
                 />
               </Field>
 
-              <Field label="Address" htmlFor="orgaddress" required>
+              <Field
+                label="Address"
+                htmlFor="orgaddress"
+                required
+                error={Errors.Address}
+              >
                 <Input
                   id="orgaddress"
                   type="text"
                   name="Address"
+                  maxLength={200}
                   placeholder="Where will it take place?"
                   value={Address}
-                  onChange={(e) => SetAddress(e.target.value)}
+                  onChange={(e) => {
+                    SetAddress(e.target.value)
+                    SetErrors((prev) => clearEventError(prev, 'Address'))
+                  }}
                 />
               </Field>
 
@@ -92,14 +136,19 @@ function Postevents() {
                   htmlFor="orgDate"
                   required
                   hint="Use DD-MM-YYYY format."
+                  error={Errors.Date}
                 >
                   <Input
                     id="orgDate"
                     type="text"
                     name="Date"
                     placeholder="DD-MM-YYYY"
+                    maxLength={10}
                     value={Date}
-                    onChange={(e) => SetDate(e.target.value)}
+                    onChange={(e) => {
+                      SetDate(e.target.value)
+                      SetErrors((prev) => clearEventError(prev, 'Date'))
+                    }}
                   />
                 </Field>
 
@@ -107,16 +156,19 @@ function Postevents() {
                   label="Number of people to attend"
                   htmlFor="orgstrength"
                   required
+                  error={Errors.Strength}
                 >
                   <Input
                     id="orgstrength"
                     type="number"
                     min={0}
+                    max={99999}
                     name="Strength"
                     placeholder="50"
+                    value={Strength2}
                     onChange={(e) => {
-                      const strength = parseInt(e.target.value)
-                      SetStrength2(Number.isNaN(strength) ? 0 : strength)
+                      SetStrength2(e.target.value)
+                      SetErrors((prev) => clearEventError(prev, 'Strength'))
                     }}
                   />
                 </Field>
