@@ -1,4 +1,5 @@
 import json
+import re
 
 from openai import OpenAI
 
@@ -26,6 +27,7 @@ If the user asks anything outside that scope (general knowledge, coding, weather
 GROUNDING RULES:
 - Use your tools for ALL platform data. NEVER invent events, ids, dates, bookings or organizations. If you don't know, say so or call a tool.
 - Keep replies short, friendly and conversational (2-5 sentences unless the user wants detail).
+- Reply in plain text only. Never use Markdown: no **, *, #, backticks, - lists, or emoji headers — the chat UI shows raw characters.
 - Dates come from the platform as plain strings; repeat them as stored.
 
 CURRENT SESSION: the user is {role}.
@@ -40,6 +42,16 @@ EVENT RULES: title 3-100 chars, description 10-1000 chars, address 5-200 chars, 
 
 def build_system_prompt(role: str | None) -> str:
     return SYSTEM_TEMPLATE.format(role=ROLE_LABELS.get(role, ROLE_LABELS[None]))
+
+
+_MARKDOWN_BOLD = re.compile(r"\*\*(.+?)\*\*|__(.+?)__")
+_MARKDOWN_ITALIC = re.compile(r"(?<![\w*])\*([^*\n]+)\*(?![\w*])|(?<![\w_])_([^_\n]+)_(?![\w_])")
+
+
+def strip_markdown(text: str) -> str:
+    text = _MARKDOWN_BOLD.sub(lambda m: m.group(1) or m.group(2) or "", text)
+    text = _MARKDOWN_ITALIC.sub(lambda m: m.group(1) or m.group(2) or "", text)
+    return text
 
 
 def run_chat(message: str, history: list[dict], token: str | None, role: str | None) -> str:
@@ -73,7 +85,7 @@ def run_chat(message: str, history: list[dict], token: str | None, role: str | N
         messages.append(choice.message)
 
         if choice.finish_reason != "tool_calls" or not choice.message.tool_calls:
-            return choice.message.content or ""
+            return strip_markdown(choice.message.content or "")
 
         for call in choice.message.tool_calls:
             try:
