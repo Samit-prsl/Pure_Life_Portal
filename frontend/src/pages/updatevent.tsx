@@ -271,7 +271,7 @@ function Updatevent() {
               </form>
             </Card>
 
-            <Card className="h-fit border-0 bg-zinc-900 p-6 text-white ring-zinc-900 sm:p-8">
+            <Card className="h-fit border-0 bg-emerald-700 p-6 text-white sm:p-8">
               <h2 className="text-lg font-semibold">Editing an event</h2>
               <p className="mt-3 text-sm leading-6 text-zinc-300">
                 Changes are visible to everyone browsing events. Update the

@@ -1,0 +1,61 @@
+name: Keep-Alive
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: keep-alive
+  cancel-in-progress: false
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Ping Go server
+        env:
+          URL: ${{ vars.GO_API_URL || 'https://golang-rest.onrender.com' }}
+        run: |
+          set -uo pipefail
+          if [ -z "${URL}" ]; then
+            echo "::error::GO_API_URL is not set"
+            exit 1
+          fi
+          for attempt in 1 2 3; do
+            echo "Attempt ${attempt}/3: ${URL}/health"
+            if curl --fail --silent --show-error --max-time 30 "${URL}/health"; then
+              echo ""
+              echo "Go server is awake"
+              exit 0
+            fi
+            echo ""
+            echo "Attempt ${attempt} failed"
+            if [ "${attempt}" -lt 3 ]; then sleep 20; fi
+          done
+          echo "::error::${URL}/health unreachable after 3 attempts"
+          exit 1
+
+      - name: Ping Python server
+        env:
+          URL: ${{ vars.HEALAI_URL || 'https://pure-life-portal-heal-ai.onrender.com' }}
+        run: |
+          set -uo pipefail
+          if [ -z "${URL}" ]; then
+            echo "::error::HEALAI_URL is not set"
+            exit 1
+          fi
+          for attempt in 1 2 3; do
+            echo "Attempt ${attempt}/3: ${URL}/health"
+            if curl --fail --silent --show-error --max-time 30 "${URL}/health"; then
+              echo ""
+              echo "Python server is awake"
+              exit 0
+            fi
+            echo ""
+            echo "Attempt ${attempt} failed"
+            if [ "${attempt}" -lt 3 ]; then sleep 20; fi
+          done
+          echo "::error::${URL}/health unreachable after 3 attempts"
+          exit 1
