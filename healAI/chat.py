@@ -92,7 +92,14 @@ def run_chat(message: str, history: list[dict], token: str | None, role: str | N
                 args = json.loads(call.function.arguments or "{}")
             except ValueError:
                 args = {}
-            result = tools.run_tool(call.function.name, args, ctx)
+            if not isinstance(args, dict):
+                args = {}
+            args = {k: v for k, v in args.items() if v is not None}
+            call.function.arguments = json.dumps(args)
+            try:
+                result = tools.run_tool(call.function.name, args, ctx)
+            except Exception as exc:
+                result = {"error": f"Tool failed: {exc}"}
             messages.append(
                 {
                     "role": "tool",
